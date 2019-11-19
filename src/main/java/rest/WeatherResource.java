@@ -2,9 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import entities.RenameMe;
+import entities.Country;
 import utils.EMF_Creator;
-import facades.FacadeExample;
+import facades.CountryFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 public class WeatherResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
-    private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
+    private static final CountryFacade CF = CountryFacade.getFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
