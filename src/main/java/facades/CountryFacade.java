@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
 
-public class CountryFacade {
+public class CountryFacade extends DataFacade{
 
     private static CountryFacade instance;
     private static EntityManagerFactory emf;
@@ -56,5 +56,7 @@ public class CountryFacade {
             em.close();
         }
     }
+    
+    
 
 }

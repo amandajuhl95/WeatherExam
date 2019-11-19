@@ -54,7 +54,7 @@ public class CountryFacadeTest {
     @Test
     public void testGetCountries() throws NotFoundException {
          List<CountryDTO> countries = facade.getCountries();
-        assertEquals(countries.size(), 0);
+        assertEquals(countries.size(), 67);
     }
 
 }

@@ -33,12 +33,11 @@ public class DataFacade {
         return instance;
     }
     
-        private String getData(String endpoint) throws MalformedURLException, IOException {
+        public String getData(String endpoint) throws MalformedURLException, IOException {
         URL url = new URL("https://www.metaweather.com/api/location/"+ endpoint);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json;charset=UTF-8");
-//    con.setRequestProperty("User-Agent", "server"); //remember if you are using SWAPI
         Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;
         if (scan.hasNext()) {
