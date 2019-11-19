@@ -1,15 +1,15 @@
 package facades;
 
+import DTO.CountryDTO;
 import entities.Country;
+import errorhandling.NotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * Rename Class to a relevant name Add add relevant facade methods
- */
+
 public class CountryFacade {
 
     private static CountryFacade instance;
@@ -18,7 +18,6 @@ public class CountryFacade {
     //Private Constructor to ensure Singleton
     private CountryFacade() {
     }
-
     /**
      *
      * @param _emf
@@ -36,14 +35,23 @@ public class CountryFacade {
         return emf.createEntityManager();
     }
 
-    //TODO Remove/Change this before use
-    public List<Country> getCountries() {
+    public List<CountryDTO> getCountries() throws NotFoundException {
         EntityManager em = getEntityManager();
+        List<CountryDTO> countryDTO = new ArrayList();
 
         try {
             TypedQuery<Country> query = getEntityManager().createQuery("SELECT c FROM Country c", Country.class);
-            return query.getResultList();
+            List<Country> countries = query.getResultList();
+            
+            for (Country country : countries) {
+                
+                countryDTO.add(new CountryDTO(country));
+            }
+            
+            return countryDTO;
 
+        } catch (Exception e) {
+            throw new NotFoundException("Requested countries could not be found");
         } finally {
             em.close();
         }

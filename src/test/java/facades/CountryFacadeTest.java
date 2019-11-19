@@ -1,7 +1,9 @@
 package facades;
 
+import DTO.CountryDTO;
 import utils.EMF_Creator;
 import entities.Country;
+import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -47,10 +49,11 @@ public class CountryFacadeTest {
 
     /**
      * Test of getCountries method, of class CountryFacade.
+     * @throws errorhandling.NotFoundException
      */
     @Test
-    public void testGetCountries() {
-         List<Country> countries = facade.getCountries();
+    public void testGetCountries() throws NotFoundException {
+         List<CountryDTO> countries = facade.getCountries();
         assertEquals(countries.size(), 0);
     }
 

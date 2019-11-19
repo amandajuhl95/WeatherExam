@@ -1,10 +1,13 @@
 package rest;
 
+import DTO.CountryDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.Country;
+import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -32,8 +35,8 @@ public class WeatherResource {
     @GET
     @Path("/countries")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getCountries() {
-         return "{\"msg\":\"Countries\"}";
+    public List<CountryDTO> getCountries() throws NotFoundException {
+         return CF.getCountries();
     }
     
     @GET
