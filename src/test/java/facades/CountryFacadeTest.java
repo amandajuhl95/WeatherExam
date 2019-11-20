@@ -50,11 +50,11 @@ public class CountryFacadeTest {
      *
      * @throws errorhandling.NotFoundException
      */
-    @Test
-    public void testGetCountries() throws NotFoundException {
-        System.out.println("getCountries");
-        List<CountryDTO> countries = facade.getCountries();
-        assertEquals(countries.size(), 118);
-    }
+//    @Test
+//    public void testGetCountries() throws NotFoundException {
+//        System.out.println("getCountries");
+//        List<CountryDTO> countries = facade.getCountries();
+//        assertEquals(countries.size(), 118);
+//    }
 
 }
