@@ -44,7 +44,7 @@ public class CountryFacadeTest {
         CountryFacade result = CountryFacade.getFacade(emf);
         assertEquals(expResult, result);
     }
-
+ 
     /**
      * Test of getCountries method, of class CountryFacade.
      *
