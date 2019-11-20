@@ -5,28 +5,46 @@
  */
 package DTO;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import entities.Country;
+import java.util.List;
 
-/**
- *
- * @author sofieamalielandt
- */
+
 public class CountryDTO {
 
-   private String name;
-   private int countryCode;
+    private final String title;
+    private final int woeid;
+    private List<CityDTO> children;
+    Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public CountryDTO(Country country) {
-        this.name = country.getName();
-        this.countryCode = country.getCountryCode();
+        this.title = country.getName();
+        this.woeid = country.getCountryCode();
+        this.children = null;
+    }
+
+    public CountryDTO(String title, String woeid, String children) {
+        this.title = title;
+        this.woeid = Integer.parseInt(woeid);
+        this.children = (List<CityDTO>) GSON.fromJson(children, CityDTO.class);
+    }
+
+    public List<CityDTO> getCities() {
+        return children;
     }
 
     public String getName() {
-        return name;
+        return title;
     }
 
     public int getCountryCode() {
-        return countryCode;
+        return woeid;
     }
-    
+
+    @Override
+    public String toString() {
+        return "CountryDTO{" + "title=" + title + ", woeid=" + woeid + ", children=" + children + '}';
+    }
+
 }

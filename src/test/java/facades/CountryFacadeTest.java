@@ -2,7 +2,6 @@ package facades;
 
 import DTO.CountryDTO;
 import utils.EMF_Creator;
-import entities.Country;
 import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -53,6 +52,7 @@ public class CountryFacadeTest {
      */
     @Test
     public void testGetCountries() throws NotFoundException {
+        System.out.println("getCountries");
          List<CountryDTO> countries = facade.getCountries();
         assertEquals(countries.size(), 67);
     }

@@ -1,18 +1,16 @@
 package rest;
 
+import DTO.CityDTO;
 import DTO.CountryDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import entities.Country;
 import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
+import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -42,8 +40,8 @@ public class WeatherResource {
     @GET
     @Path("/country/{country}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getCountry(@PathParam("country") int countrycode) {
-         return "{\"msg\":\"Cities in " + countrycode + "\"}";
+    public List<CityDTO> getCountry(@PathParam("country") int countrycode) throws IOException {
+         return CF.getCities(countrycode);
     }
     
     @GET

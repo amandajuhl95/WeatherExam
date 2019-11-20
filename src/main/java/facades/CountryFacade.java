@@ -1,8 +1,12 @@
 package facades;
 
+import DTO.CityDTO;
 import DTO.CountryDTO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import entities.Country;
 import errorhandling.NotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -14,6 +18,7 @@ public class CountryFacade extends DataFacade{
 
     private static CountryFacade instance;
     private static EntityManagerFactory emf;
+    Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     //Private Constructor to ensure Singleton
     private CountryFacade() {
@@ -57,6 +62,12 @@ public class CountryFacade extends DataFacade{
         }
     }
     
-    
+    public List<CityDTO> getCities(int countryCode) throws IOException
+    {
+        CountryDTO country = GSON.fromJson(super.getData(Integer.toString(countryCode)), CountryDTO.class);
+        return country.getCities();
+    } 
 
 }
+
+
