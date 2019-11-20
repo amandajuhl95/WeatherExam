@@ -126,13 +126,11 @@ public class CountryFacade extends DataFacade {
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.DAYS);
 
-        for (CountryDTO state : states) {
-            for (CityDTO city : state.getCities()) {
-
+        states.forEach((state) -> {
+            state.getCities().forEach((city) -> {
                 cities.add(city);
-
-            }
-        }
+            });
+        });
 
         return cities;
     }
