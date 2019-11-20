@@ -28,19 +28,18 @@ public class CountryFacadeTest {
         emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.CREATE);
         facade = CountryFacade.getFacade(emf);
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
 //        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
-
 
     /**
      * Test of getFacade method, of class CountryFacade.
      */
     @Test
     public void testGetFacade() {
-       System.out.println("getCountryFacade");
+        System.out.println("getCountryFacade");
         CountryFacade expResult = facade;
         CountryFacade result = CountryFacade.getFacade(emf);
         assertEquals(expResult, result);
@@ -48,12 +47,13 @@ public class CountryFacadeTest {
 
     /**
      * Test of getCountries method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
     public void testGetCountries() throws NotFoundException {
         System.out.println("getCountries");
-         List<CountryDTO> countries = facade.getCountries();
+        List<CountryDTO> countries = facade.getCountries();
         assertEquals(countries.size(), 118);
     }
 
