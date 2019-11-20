@@ -23,6 +23,12 @@ public class CountryDTO {
         this.woeid = country.getCountryCode();
         this.children = null;
     }
+    
+     public CountryDTO(CityDTO state) {
+        this.title = state.getName();
+        this.woeid = state.getCityCode();
+        this.children = null;
+    }
 
     public CountryDTO(String title, String woeid, String children) {
         this.title = title;

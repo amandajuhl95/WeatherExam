@@ -2,11 +2,13 @@ package rest;
 
 import DTO.CityDTO;
 import DTO.CountryDTO;
+import DTO.WeatherForecastDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
+import facades.WeatherFacade;
 import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -22,6 +24,7 @@ public class WeatherResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static final CountryFacade CF = CountryFacade.getFacade(EMF);
+    private static final WeatherFacade WF = WeatherFacade.getFacade();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -34,28 +37,28 @@ public class WeatherResource {
     @Path("/countries")
     @Produces({MediaType.APPLICATION_JSON})
     public List<CountryDTO> getCountries() throws NotFoundException {
-         return CF.getCountries();
+        return CF.getCountries();
     }
-    
+
     @GET
     @Path("/country/{country}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<CityDTO> getCountry(@PathParam("country") int countrycode) throws IOException {
-         return CF.getCities(countrycode);
+    public List<CityDTO> getCountry(@PathParam("country") int countrycode) throws NotFoundException {
+        return CF.getCities(countrycode);
     }
-    
+
     @GET
     @Path("/city/{city}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getCityWeather(@PathParam("city") int citycode) {
-         return "{\"msg\":\"Weather prognosis for " + citycode + "\"}";
+        return "{\"msg\":\"Weather prognosis for " + citycode + "\"}";
     }
-    
+
     @GET
-    @Path("/city/{city}/{date}")
+    @Path("/city/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("date") String date) {
-         return "{\"msg\":\"Weather prognosis for " + citycode + " on the " + date + "\"}";
+    public WeatherForecastDTO getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) throws NotFoundException {
+        return WF.getWeatherForecast(citycode, year, month, day);
     }
 
 }

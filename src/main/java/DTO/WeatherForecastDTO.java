@@ -5,32 +5,79 @@
  */
 package DTO;
 
+import facades.WeatherForecast;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  *
  * @author benja
  */
 public class WeatherForecastDTO {
-   
 
-private String weatherIcon;
-private String temp;
-private String windDirection;
-private String windSpeed;
-private String humidity;
-private String predictability;
-private String funnyAdvice;
+   private String dateTime;
+   private String weatherStatus;
+   private String weatherIcon;
+   private double temp;
+   private String windDirection;
+   private double windSpeed;
+   private int humidity;
+   private int predictability;
+   private String funnyAdvice;
+   DateFormat formatter =  new SimpleDateFormat("dd.MM.yyyy");
 
-    public WeatherForecastDTO(String weather_state_abbr, String temp, String wind_direction_compass, String windSpeed, String humidity, String predictability, String funnyAdvice) {
-        this.weatherIcon = weather_state_abbr;
-        this.temp = temp;
-        this.windDirection = wind_direction_compass;
-        this.windSpeed = windSpeed;
-        this.humidity = humidity;
-        this.predictability = predictability;
-        this.funnyAdvice = funnyAdvice;
+    public WeatherForecastDTO(WeatherForecast forecast) {
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.dateTime = formatter.format(forecast.getCreated());
+        this.weatherStatus = forecast.getWeather_state_name();
+        this.weatherIcon = "https://www.metaweather.com/static/img/weather/png/" + forecast.getWeather_state_abbr() + ".png";
+        this.temp = forecast.getThe_temp();
+        this.windDirection = forecast.getWind_direction_compass();
+        this.windSpeed = forecast.getWind_speed();
+        this.humidity = forecast.getHumidity();
+        this.predictability = forecast.getPredictability();
+        this.funnyAdvice = "blabla";
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public String getWeatherStatus() {
+        return weatherStatus;
+    }
+
+    public String getWeatherIcon() {
+        return weatherIcon;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public int getPredictability() {
+        return predictability;
+    }
+
+    public String getFunnyAdvice() {
+        return funnyAdvice;
     }
 
 
-    
+
 }
- 
