@@ -9,7 +9,6 @@ import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
 import facades.WeatherFacade;
-import java.io.IOException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
@@ -57,7 +56,7 @@ public class WeatherResource {
     @GET
     @Path("/city/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public WeatherForecastDTO getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) throws NotFoundException {
+    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) throws NotFoundException {
         return WF.getWeatherForecast(citycode, year, month, day);
     }
 

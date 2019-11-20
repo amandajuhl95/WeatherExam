@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -46,25 +45,4 @@ public class DataFacade {
         return jsonStr;
     }
     
-        
-        
-        
-        
-   
-        
-        
-        
-        
-        
-        
-        
-        public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
-        
-        DataFacade df = DataFacade.getDataFacade();
-        
-        String json = df.getData("23424808");
-        
-            System.out.println(json);
-        
-    }
 }

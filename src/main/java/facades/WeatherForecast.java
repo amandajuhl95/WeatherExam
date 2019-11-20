@@ -15,22 +15,22 @@ import java.util.Date;
  */
 public class WeatherForecast {
     
-    private String weather_state_abbr;
-    private String weather_state_name;
-    private double the_temp;
-    private String wind_direction_compass;
-    private double wind_speed;
-    private int humidity;
-    private int predictability;
-    private Date created;
-    SimpleDateFormat formatter =  new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSS z");
+    private final String weather_state_abbr;
+    private final String weather_state_name;
+    private final double the_temp;
+    private final String wind_direction_compass;
+    private final double wind_speed;
+    private final int humidity;
+    private final int predictability;
+    private final Date created;
+    SimpleDateFormat formatter =  new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSS");
 
     public WeatherForecast(String weather_state_abbr, String weather_state_name, String the_temp, String wind_direction_compass, String wind_speed, String humidity, String predictability, String created) throws ParseException {
         this.weather_state_abbr = weather_state_abbr;
         this.weather_state_name = weather_state_name;
         this.the_temp = Double.parseDouble(the_temp);
         this.wind_direction_compass = wind_direction_compass;
-        this.wind_speed = Double.parseDouble(wind_speed);;
+        this.wind_speed = Double.parseDouble(wind_speed);
         this.humidity = Integer.parseInt(humidity);
         this.predictability = Integer.parseInt(predictability);
         this.created = formatter.parse(created);

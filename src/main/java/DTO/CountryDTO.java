@@ -18,18 +18,21 @@ public class CountryDTO {
     private List<CityDTO> children;
     Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    //Constructor for countries in the database
     public CountryDTO(Country country) {
         this.title = country.getName();
         this.woeid = country.getCountryCode();
         this.children = null;
     }
-    
+   
+     //Constructor for adding states from USA to the list of countries
      public CountryDTO(CityDTO state) {
         this.title = state.getName();
         this.woeid = state.getCityCode();
         this.children = null;
     }
 
+     //Constructor for fetching cities from extern server
     public CountryDTO(String title, String woeid, String children) {
         this.title = title;
         this.woeid = Integer.parseInt(woeid);

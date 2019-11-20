@@ -10,9 +10,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errorhandling.NotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.WebApplicationException;
 
 /**
  *
@@ -38,13 +38,29 @@ public class WeatherFacade extends DataFacade {
         return instance;
     }
 
-    public WeatherForecastDTO getWeatherForecast(int citycode, int year, int month, int day) throws NotFoundException {
+    public List<WeatherForecastDTO> getWeatherForecast(int citycode, int year, int month, int day) throws NotFoundException {
 
         try {
-            String jsonForecasts = super.getData((citycode + "/" + year + "/" + month + "/" + day));
-            WeatherForecast[] weatherForecasts = GSON.fromJson(jsonForecasts, WeatherForecast[].class);
-            
-            return new WeatherForecastDTO(weatherForecasts[0]);
+            List<WeatherForecastDTO> forecast = new ArrayList();
+            String weatherJson = super.getData((citycode + "/" + year + "/" + month + "/" + day));
+            WeatherForecast[] weather = GSON.fromJson(weatherJson, WeatherForecast[].class);
+
+            if (weather == null || weather.length <= 0) {
+                throw new WebApplicationException("No weatherforecast found for the date", 400);
+            }
+
+            if (weather.length >= 5) {
+                for (int i = 0; i < 6; i++) {
+                    forecast.add(new WeatherForecastDTO(weather[i]));
+                }
+
+            } else {
+                for (WeatherForecast f : weather) {
+                    forecast.add(new WeatherForecastDTO(f));
+                }
+            }
+
+            return forecast;
 
         } catch (IOException e) {
             throw new NotFoundException(e.getMessage());

@@ -7,9 +7,7 @@ package DTO;
 
 import facades.WeatherForecast;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -18,16 +16,16 @@ import java.util.TimeZone;
  */
 public class WeatherForecastDTO {
 
-   private String dateTime;
-   private String weatherStatus;
-   private String weatherIcon;
-   private double temp;
-   private String windDirection;
-   private double windSpeed;
-   private int humidity;
-   private int predictability;
-   private String funnyAdvice;
-   DateFormat formatter =  new SimpleDateFormat("dd.MM.yyyy");
+    private String dateTime;
+    private String weatherStatus;
+    private String weatherIcon;
+    private double temp;
+    private String windDirection;
+    private double windSpeed;
+    private int humidity;
+    private int predictability;
+    private String funnyAdvice;
+    DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy kk:mm");
 
     public WeatherForecastDTO(WeatherForecast forecast) {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -39,7 +37,22 @@ public class WeatherForecastDTO {
         this.windSpeed = forecast.getWind_speed();
         this.humidity = forecast.getHumidity();
         this.predictability = forecast.getPredictability();
-        this.funnyAdvice = "blabla";
+        this.funnyAdvice = funnyAdvice();
+    }
+
+    private String funnyAdvice() {
+        if (weatherStatus.equals("Thunderstorm") || weatherStatus.contains("Rain") || weatherStatus.equals("Showers")) {
+            return "Remember your umbrella today!";
+        } else if (temp >= 25 && weatherStatus.equals("Clear")) {
+            return "There is no such thing as a healthy tan, use sunscreen today!";
+        } else if (windSpeed >= 12 && weatherStatus.equals("Clear")) {
+            return "Perfect weather for flying with kites!";
+        }else if (weatherStatus.equals("Snow")) {
+            return "Do you wanna build a snowman?";
+        } else if (temp <= 5) {
+            return "It's cold outside, were a sweater";
+        }
+        return "";
     }
 
     public String getDateTime() {
@@ -77,7 +90,5 @@ public class WeatherForecastDTO {
     public String getFunnyAdvice() {
         return funnyAdvice;
     }
-
-
 
 }
