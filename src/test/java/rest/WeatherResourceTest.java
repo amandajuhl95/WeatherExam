@@ -92,7 +92,7 @@ public class WeatherResourceTest {
                 .body("cityCode", hasSize(10), "name", hasSize(10));
 
     }
-//
+
 //    /**
 //     * Test of getCityWeather method, of class WeatherResource.
 //     */
