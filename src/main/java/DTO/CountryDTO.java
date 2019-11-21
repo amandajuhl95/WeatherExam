@@ -25,7 +25,7 @@ public class CountryDTO {
         this.children = null;
     }
    
-     //Constructor for adding states from USA to the list of countries
+     //Constructor for adding states from USA and UK to the list of countries
      public CountryDTO(CityDTO state) {
         this.title = state.getName();
         this.woeid = state.getCityCode();

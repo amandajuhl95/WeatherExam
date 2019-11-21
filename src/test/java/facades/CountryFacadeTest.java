@@ -7,17 +7,16 @@ import errorhandling.NotFoundException;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class CountryFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -37,14 +36,6 @@ public class CountryFacadeTest {
 //        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
 
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-    }
-
     /**
      * Test of getFacade method, of class CountryFacade.
      */
@@ -56,45 +47,64 @@ public class CountryFacadeTest {
         assertEquals(expResult, result);
     }
 
-//    /**
-//     * Test of getCountries method, of class CountryFacade.
-//     */
-//    @Test
-//    public void testGetCountries() throws Exception {
-//        System.out.println("getCountries");
-//        CountryFacade instance = null;
-//        List<CountryDTO> expResult = null;
-//        List<CountryDTO> result = instance.getCountries();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
-//    /**
-//     * Test of getCities method, of class CountryFacade.
-//     */
-//    @Test
-//    public void testGetCities() throws Exception {
-//        System.out.println("getCities");
-//        int countryCode = 0;
-//        CountryFacade instance = null;
-//        List<CityDTO> expResult = null;
-//        List<CityDTO> result = instance.getCities(countryCode);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
- 
     /**
      * Test of getCountries method, of class CountryFacade.
-     *
      * @throws errorhandling.NotFoundException
      */
-//    @Test
-//    public void testGetCountries() throws NotFoundException {
-//        System.out.println("getCountries");
-//        List<CountryDTO> countries = facade.getCountries();
-//        assertEquals(countries.size(), 118);
-//    }
+    @Test
+    public void testGetCountries() throws NotFoundException {
+        System.out.println("getCountries");
+        List<CountryDTO> countries = facade.getCountries();
+        assertEquals(122, countries.size());
+    }
 
+    /**
+     * Test of getCities method, of class CountryFacade.
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testGetCities() throws NotFoundException {
+        System.out.println("getCities");
+        List<CityDTO> cities = facade.getCities(23424848);
+        assertEquals(9, cities.size());
+    }
+    
+    /**
+     * Test of getCities method, of class CountryFacade.
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testGetCitiesUK() throws NotFoundException {
+        System.out.println("getCities in UK");
+        List<CityDTO> cities = facade.getCities(23424975);
+        assertEquals(52, cities.size());
+    }
+    
+    /**
+     * Test of getCities method, of class CountryFacade.
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testGetCitiesUSA() throws NotFoundException {
+        System.out.println("getCities in USA");
+        List<CityDTO> cities = facade.getCities(23424977);
+        assertEquals(78, cities.size());
+    }
+    
+    /**
+     * Test of getCities method, of class CountryFacade.
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testNegativeGetCities() throws NotFoundException {
+        System.out.println("Negative getCities");
+        try {
+            facade.getCities(34543534);
+            fail();
+        } catch (NotFoundException ex) {
+
+            assertEquals("Requested cities could not be found", ex.getMessage());
+
+        }
+    }
 }
