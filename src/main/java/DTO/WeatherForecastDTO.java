@@ -50,7 +50,7 @@ public class WeatherForecastDTO {
         }else if (weatherStatus.equals("Snow")) {
             return "Do you wanna build a snowman?";
         } else if (temp <= 5) {
-            return "It's cold outside, were a sweater";
+            return "It's cold outside, were a sweater... or die";
         }
         return "";
     }

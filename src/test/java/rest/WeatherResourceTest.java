@@ -1,11 +1,14 @@
 package rest;
 
+import DTO.CityDTO;
+import DTO.CountryDTO;
 import entities.Country;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -15,6 +18,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -77,6 +81,10 @@ public class WeatherResourceTest {
 //            em.close();
 //        }
     }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+    }
     
     @Test
     public void testServerIsUp() {
@@ -94,5 +102,81 @@ public class WeatherResourceTest {
         .statusCode(HttpStatus.OK_200.getStatusCode())
         .body("msg", equalTo("Hello World"));   
     }
+
+//    /**
+//     * Test of demo method, of class WeatherResource.
+//     */
+//    @Test
+//    public void testDemo() {
+//        System.out.println("demo");
+//        WeatherResource instance = new WeatherResource();
+//        String expResult = "";
+//        String result = instance.demo();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getCountries method, of class WeatherResource.
+//     */
+//    @Test
+//    public void testGetCountries() throws Exception {
+//        System.out.println("getCountries");
+//        WeatherResource instance = new WeatherResource();
+//        List<CountryDTO> expResult = null;
+//        List<CountryDTO> result = instance.getCountries();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getCountry method, of class WeatherResource.
+//     */
+//    @Test
+//    public void testGetCountry() throws Exception {
+//        System.out.println("getCountry");
+//        int countrycode = 0;
+//        WeatherResource instance = new WeatherResource();
+//        List<CityDTO> expResult = null;
+//        List<CityDTO> result = instance.getCountry(countrycode);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getCityWeather method, of class WeatherResource.
+//     */
+//    @Test
+//    public void testGetCityWeather() {
+//        System.out.println("getCityWeather");
+//        int citycode = 0;
+//        WeatherResource instance = new WeatherResource();
+//        String expResult = "";
+//        String result = instance.getCityWeather(citycode);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
+//
+//    /**
+//     * Test of getCityWeatherByDate method, of class WeatherResource.
+//     */
+//    @Test
+//    public void testGetCityWeatherByDate() {
+//        System.out.println("getCityWeatherByDate");
+//        int citycode = 0;
+//        int year = 0;
+//        int month = 0;
+//        int day = 0;
+//        WeatherResource instance = new WeatherResource();
+//        String expResult = "";
+//        String result = instance.getCityWeatherByDate(citycode, year, month, day);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
     
 }

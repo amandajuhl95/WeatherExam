@@ -63,7 +63,7 @@ public class CountryFacade extends DataFacade {
 
             // All states in USA is added as countries in the list
             // This makes it possible to get the individual cities in the states.
-            CountryDTO USA = GSON.fromJson(super.getData(Integer.toString(23424977)), CountryDTO.class);
+            CountryDTO USA = GSON.fromJson(super.getData("23424977"), CountryDTO.class);
 
             USA.getCities().forEach((state) -> {
                 countryDTO.add(new CountryDTO(state));
