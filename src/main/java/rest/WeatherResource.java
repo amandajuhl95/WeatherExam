@@ -29,7 +29,7 @@ public class WeatherResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
-        return "{\"msg\":\"Hello World\"}";
+        return "{\"msg\":\"Hello to TheCloud\"}";
     }
 
     @GET
@@ -56,12 +56,10 @@ public class WeatherResource {
     @GET
     @Path("/city/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) {
-        try {
-            return GSON.toJson(WF.getWeatherForecast(citycode, year, month, day));
-        } catch (NotFoundException e) {
-            return e.getMessage();
-        }
+    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) throws NotFoundException {
+
+        return WF.getWeatherForecast(citycode, year, month, day);
+
     }
 
 }
