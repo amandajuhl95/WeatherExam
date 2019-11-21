@@ -23,7 +23,6 @@ import javax.persistence.TypedQuery;
 
 public class CountryFacade extends DataFacade {
 
-    private static ExecutorService executor = Executors.newCachedThreadPool();
     private static CountryFacade instance;
     private static EntityManagerFactory emf;
     Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -69,6 +68,14 @@ public class CountryFacade extends DataFacade {
                 countryDTO.add(new CountryDTO(state));
             });
 
+            // All states in UK is added as countries in the list
+            // This makes it possible to get the individual cities in the states.
+            CountryDTO UK = GSON.fromJson(super.getData("23424975"), CountryDTO.class);
+
+            UK.getCities().forEach((state) -> {
+                countryDTO.add(new CountryDTO(state));
+            });
+
             return countryDTO;
 
         } catch (JsonSyntaxException | IOException e) {
@@ -80,29 +87,30 @@ public class CountryFacade extends DataFacade {
 
     public List<CityDTO> getCities(int countryCode) throws NotFoundException {
         try {
-            if (countryCode == 23424977) {
-                return getCitiesUSA();
+            if (countryCode == 23424977 || countryCode == 23424975) {
+                return getCitiesUSAorUK(countryCode);
             }
             CountryDTO country = GSON.fromJson(super.getData(Integer.toString(countryCode)), CountryDTO.class);
             return country.getCities();
 
         } catch (IOException | InterruptedException | ExecutionException e) {
-            throw new NotFoundException(e.getMessage());
+            throw new NotFoundException("Requested cities could not be found");
 
         }
     }
 
-    // This method is implemented to get all cities in USA from every state, this method is only 
-    // implemented because the option to select USA is still possible
-    private List<CityDTO> getCitiesUSA() throws IOException, InterruptedException, ExecutionException {
-        CountryDTO USA = GSON.fromJson(super.getData("23424977"), CountryDTO.class);
+    // This method is implemented to get all cities in USA or UK from every state, this method is only 
+    // implemented because the option to select USA or UK is still possible
+    private List<CityDTO> getCitiesUSAorUK(int countrycode) throws IOException, InterruptedException, ExecutionException {
+        CountryDTO USAorUK = GSON.fromJson(super.getData(Integer.toString(countrycode)), CountryDTO.class);
         List<CityDTO> cities = new ArrayList();
         List<CountryDTO> states = new ArrayList();
+        ExecutorService executor = Executors.newFixedThreadPool(USAorUK.getCities().size());
 
-        Queue<Future<CountryDTO>> queue = new ArrayBlockingQueue(USA.getCities().size());
+        Queue<Future<CountryDTO>> queue = new ArrayBlockingQueue(USAorUK.getCities().size());
 
-        for (int i = 0; i < USA.getCities().size(); i++) {
-            String stateId = Integer.toString(USA.getCities().get(i).getCityCode());
+        for (int i = 0; i < USAorUK.getCities().size(); i++) {
+            String stateId = Integer.toString(USAorUK.getCities().get(i).getCityCode());
             Future<CountryDTO> future = executor.submit(() -> {
 
                 CountryDTO state = GSON.fromJson(super.getData(stateId), CountryDTO.class);
