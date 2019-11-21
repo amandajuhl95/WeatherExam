@@ -107,7 +107,7 @@ public class WeatherResourceTest {
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-//
+
 
     /**
      * Test of getCityWeatherByDate method, of class WeatherResource.
