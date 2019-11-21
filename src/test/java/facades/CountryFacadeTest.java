@@ -2,9 +2,11 @@ package facades;
 
 import DTO.CityDTO;
 import DTO.CountryDTO;
+import entities.Country;
 import utils.EMF_Creator;
 import errorhandling.NotFoundException;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +29,28 @@ public class CountryFacadeTest {
 
     @BeforeAll
     public static void setUpClass() {
-        emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.CREATE);
+        emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
         facade = CountryFacade.getFacade(emf);
+        EntityManager em = emf.createEntityManager();
+        
+        Country c1 = new Country("Spain", 23424950);
+        Country c2 = new Country("Denmark", 23424796);
+        Country c3 = new Country("North Korea", 23424865);
+        
+         try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Country.deleteAllRows").executeUpdate();
+
+            em.persist(c1);
+            em.persist(c2);
+            em.persist(c3);
+
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+
     }
 
     @AfterAll
@@ -55,7 +77,7 @@ public class CountryFacadeTest {
     public void testGetCountries() throws NotFoundException {
         System.out.println("getCountries");
         List<CountryDTO> countries = facade.getCountries();
-        assertEquals(122, countries.size());
+        assertEquals(58, countries.size());
     }
 
     /**
