@@ -5,6 +5,8 @@
  */
 package facades;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,32 +39,24 @@ public class DataFacadeTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getDataFacade method, of class DataFacade.
-     */
-    @Test
-    public void testGetDataFacade() {
-        System.out.println("getDataFacade");
-        DataFacade expResult = null;
-        DataFacade result = DataFacade.getDataFacade();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of getData method, of class DataFacade.
      */
     @Test
     public void testGetData() throws Exception {
+        Gson GSON = new GsonBuilder().setPrettyPrinting().create();
         System.out.println("getData");
-        String endpoint = "";
+        String endpoint = "44418/2013/4/27/";
         DataFacade instance = new DataFacade();
-        String expResult = "";
-        String result = instance.getData(endpoint);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        double expResult = 9.85;
+        String weatherJson = instance.getData(endpoint);
+        WeatherForecast[] weather = GSON.fromJson(weatherJson, WeatherForecast[].class);
+        
+       
+        assertEquals(expResult, weather[0].getWind_speed());
+     
     }
     
 }
