@@ -16,10 +16,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class WeatherResourceTest {
 
     private static final int SERVER_PORT = 7777;
@@ -51,13 +52,11 @@ public class WeatherResourceTest {
 
     @BeforeEach
     public void setUp() {
-        //Setup the DataBase (used by the test-server and this test) in a known state BEFORE EACH TEST
+
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-
-        // Remove any data after each test was run
     }
 
     @Test
@@ -65,7 +64,6 @@ public class WeatherResourceTest {
         System.out.println("Testing is server UP");
         given().when().get("/weather").then().statusCode(200);
     }
-//
 
     /**
      * Test of getCountries method, of class WeatherResource.
@@ -79,7 +77,6 @@ public class WeatherResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("countryCode", hasItem(23424984), "name", hasItem("Vietnam"));
     }
-//
 
     /**
      * Test of getCountry method, of class WeatherResource.
