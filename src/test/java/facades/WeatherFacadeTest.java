@@ -6,6 +6,7 @@
 package facades;
 
 import DTO.WeatherForecastDTO;
+import static facades.WeatherFacade.getFacade;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -39,18 +40,7 @@ public class WeatherFacadeTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getFacade method, of class WeatherFacade.
-     */
-    @Test
-    public void testGetFacade() {
-        System.out.println("getFacade");
-        WeatherFacade expResult = null;
-        WeatherFacade result = WeatherFacade.getFacade();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+   
 
     /**
      * Test of getWeatherForecast method, of class WeatherFacade.
@@ -58,16 +48,15 @@ public class WeatherFacadeTest {
     @Test
     public void testGetWeatherForecast() throws Exception {
         System.out.println("getWeatherForecast");
-        int citycode = 0;
-        int year = 0;
-        int month = 0;
-        int day = 0;
-        WeatherFacade instance = null;
-        List<WeatherForecastDTO> expResult = null;
+        int citycode = 44418;
+        int year = 2013;
+        int month = 4;
+        int day = 27;
+        WeatherFacade instance = getFacade();
+        double expResult = 9.85;
         List<WeatherForecastDTO> result = instance.getWeatherForecast(citycode, year, month, day);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result.get(0).getWindSpeed());
+ 
     }
     
 }
