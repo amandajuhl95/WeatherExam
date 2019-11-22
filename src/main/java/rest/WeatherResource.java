@@ -9,12 +9,14 @@ import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
 import facades.WeatherFacade;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 //Todo Remove or change relevant parts before ACTUAL use
@@ -35,15 +37,32 @@ public class WeatherResource {
     @GET
     @Path("/countries")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<CountryDTO> getCountries() throws NotFoundException {
-        return CF.getCountries();
+    public List<CountryDTO> getCountries() {
+
+        try {
+            return CF.getCountries();
+
+        } catch (NotFoundException ex) {
+
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
     }
 
     @GET
     @Path("/country/{country}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<CityDTO> getCountry(@PathParam("country") int countrycode) throws NotFoundException {
-        return CF.getCities(countrycode);
+    public List<CityDTO> getCountry(@PathParam("country") int countrycode) {
+
+        if (countrycode > 99999999 || countrycode < 1000000) {
+            throw new WebApplicationException("Countrycodes must be between 7 and 8 digits", 400);
+        }
+        try {
+            return CF.getCities(countrycode);
+
+        } catch (NotFoundException ex) {
+
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
     }
 
     @GET
@@ -56,9 +75,29 @@ public class WeatherResource {
     @GET
     @Path("/city/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) throws NotFoundException {
+    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) {
 
-        return WF.getWeatherForecast(citycode, year, month, day);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1;
+        
+        if (citycode > 9999999 || citycode < 1000) {
+            throw new WebApplicationException("Citycodes must be between 4 and 7 digits", 400);
+        }
+
+        if (year < 2013 || month < 1 || month > 12 || day > 31 || day < 1) {
+            throw new WebApplicationException("I dont think we use the same calendar", 400);
+        }
+
+        if (year > currentYear) {
+            throw new WebApplicationException("Obviously we cant predict the weather THAT far ahead", 400);
+        }
+
+        try {
+            return WF.getWeatherForecast(citycode, year, month, day);
+
+        } catch (NotFoundException ex) {
+
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
 
     }
 
