@@ -75,26 +75,36 @@ public class WeatherResource {
     @GET
     @Path("/city/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") int citycode, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) {
+    public List<WeatherForecastDTO> getCityWeatherByDate(@PathParam("city") String city, @PathParam("year") int year, @PathParam("month") int month, @PathParam("day") int day) {
 
+        int citycode;
         int currentYear = Calendar.getInstance().get(Calendar.YEAR) + 1;
-        
-        if (citycode > 9999999 || citycode < 1000) {
-            throw new WebApplicationException("Citycodes must be between 4 and 7 digits", 400);
-        }
-
-        if (year < 2013 || month < 1 || month > 12 || day > 31 || day < 1) {
-            throw new WebApplicationException("I dont think we use the same calendar", 400);
-        }
-
-        if (year > currentYear) {
-            throw new WebApplicationException("Obviously we cant predict the weather THAT far ahead", 400);
-        }
 
         try {
+            if (!city.matches("[0-9]+")) {
+
+                CityDTO c = CF.getCity(city);
+                citycode = c.getCityCode();
+
+            } else {
+                citycode = Integer.parseInt(city);
+            }
+
+            if (citycode > 9999999 || citycode < 1000) {
+                throw new WebApplicationException("Citycodes must be between 4 and 7 digits", 400);
+            }
+
+            if (year < 2013 || month < 1 || month > 12 || day > 31 || day < 1) {
+                throw new WebApplicationException("I dont think we use the same calendar", 400);
+            }
+
+            if (year > currentYear) {
+                throw new WebApplicationException("Obviously we cant predict the weather THAT far ahead", 400);
+            }
+
             return WF.getWeatherForecast(citycode, year, month, day);
 
-        } catch (NotFoundException ex) {
+        } catch (Exception ex) {
 
             throw new WebApplicationException(ex.getMessage(), 400);
         }

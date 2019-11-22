@@ -85,6 +85,18 @@ public class CountryFacade extends DataFacade {
         }
     }
 
+    public CityDTO getCity(String cityname) throws NotFoundException {
+
+        try {
+            CityDTO[] city = GSON.fromJson(super.getData("search/?query=" + cityname.toLowerCase()), CityDTO[].class);
+            return city[0];
+
+        } catch (Exception e) {
+            throw new NotFoundException("Requested city could not be found");
+
+        }
+    }
+
     public List<CityDTO> getCities(int countryCode) throws NotFoundException {
         try {
             if (countryCode == 23424977 || countryCode == 23424975) {
@@ -140,5 +152,5 @@ public class CountryFacade extends DataFacade {
 
         return cities;
     }
-
+    
 }
