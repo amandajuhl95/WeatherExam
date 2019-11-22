@@ -41,18 +41,31 @@ public class WeatherForecastDTO {
     }
 
     private String funnyAdvice() {
-        if (weatherStatus.equals("Thunderstorm") || weatherStatus.contains("Rain") || weatherStatus.equals("Showers")) {
+          if ("Heavy Rain".equals(weatherStatus) ) {
+            return "an umbrella is not going to be enough, take a cap or drown in rain";
+        }
+          else if ("Hail".equals(weatherStatus)){
+              return "Is it snow ? ... is it rain ? ... no, its hail, so keep your head down or you will turn blind!";
+          }
+          else if (weatherStatus.equals("Thunderstorm") || weatherStatus.contains("Rain") || weatherStatus.equals("Showers")) {
             return "Remember your umbrella today!";
         } else if (temp >= 25 && weatherStatus.equals("Clear")) {
             return "There is no such thing as a healthy tan, use sunscreen today!";
         } else if (windSpeed >= 12 && weatherStatus.equals("Clear")) {
             return "Perfect weather for flying with kites!";
+        }
+          else if (windSpeed >= 25) {
+            return "if you are going on a bikeride we hope your destination is "+ windDirection +" otherwise it's going to be a tough ride!";
         }else if (weatherStatus.equals("Snow")) {
             return "Do you wanna build a snowman?";
         } else if (temp <= 5) {
             return "It's cold outside, were a sweater... or die";
         }
-        return "";
+        else if (weatherStatus.equals("Heavy Cloud")) {
+            return "Goodbye sunshine the clouds have taken ower today";
+        }
+        
+        return "Not a good day for an umbrella, neither for a sweather nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!";
     }
 
     public String getDateTime() {
