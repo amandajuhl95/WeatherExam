@@ -7,6 +7,7 @@ package facades;
 
 import DTO.WeatherForecastDTO;
 import errorhandling.NotFoundException;
+import java.text.ParseException;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,7 +50,7 @@ public class WeatherFacadeTest {
      * @throws errorhandling.NotFoundException
      */
     @Test
-    public void testGetWeatherForecast() throws NotFoundException {
+    public void testGetWeatherForecast() throws NotFoundException, ParseException {
         System.out.println("getWeatherForecast");
 
         double expResult = 9.85;
@@ -67,7 +68,7 @@ public class WeatherFacadeTest {
      * @throws errorhandling.NotFoundException
      */
     @Test
-    public void testNotFoundGetWeatherForecast() throws NotFoundException {
+    public void testNotFoundGetWeatherForecast() throws NotFoundException, ParseException {
         System.out.println("Negative countrycode for 1 day prognosis");
         try {
             facade.getWeatherForecast(368147, 2020, 12, 12);

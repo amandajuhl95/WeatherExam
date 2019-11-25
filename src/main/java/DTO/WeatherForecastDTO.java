@@ -27,7 +27,7 @@ public class WeatherForecastDTO {
     private int predictability;
     private String funnyAdvice;
     DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy kk:mm");
-    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
     public WeatherForecastDTO(WeatherForecast forecast) {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -54,17 +54,17 @@ public class WeatherForecastDTO {
         } else if (windSpeed >= 12 && "Clear".equals(weatherStatus)) {
             return "Perfect weather for flying with kites!";
         } else if (windSpeed >= 25) {
-            return "if you are going on a bikeride we hope your destination is " + windDirection + " otherwise it's going to be a tough ride!";
+            return "If you are going on a bikeride we hope your destination is " + windDirection + " otherwise it's going to be a tough ride!";
         } else if ("Snow".equals(weatherStatus)) {
             return "Do you wanna build a snowman?";
         } else if (temp <= 5) {
             return "It's cold outside, were a sweater... or die";
         } else if ("Heavy Cloud".equals(weatherStatus)) {
             return "Goodbye sunshine the clouds have taken ower today";
-        } else if (temp < 15) {
+        } else if (temp < 10) {
             return "Why would humanity even set foot in a place this cold!! our advice: leave, dont look back! just get out of there";
         } else if (temp < 0) {
-            return "snif snif... Whats that? hot coco on the stove?.. its freazing outside you better stay in and drink up!";
+            return "Snif snif... Whats that? hot choko on the stove?.. its freazing outside you better stay in and drink up!";
         } else if (predictability < 35) {
             return "I woudent trust so much in the weather reports today, they are probably wrong";
         } else if ("Light Cloud".equals(weatherStatus)) {

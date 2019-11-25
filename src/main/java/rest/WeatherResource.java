@@ -72,6 +72,7 @@ public class WeatherResource {
         int citycode;
 
         try {
+            
             if (!city.matches("[0-9]+")) {
 
                 CityDTO c = CF.getCity(city);

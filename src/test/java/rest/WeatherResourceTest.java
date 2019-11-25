@@ -11,7 +11,7 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -67,7 +67,7 @@ public class WeatherResourceTest {
                 .get("weather/countries").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("countryCode", hasItem(23424984), "name", hasItem("Vietnam"));
+                .body("countryCode", hasSize(58), "name", hasSize(58));
     }
 
     /**
@@ -167,7 +167,7 @@ public class WeatherResourceTest {
                 .get("weather/city/" + 368148 + "/" + 2013 + "/" + 12 + "/" + 12).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("funnyAdvice", hasItem("Not a good day for an umbrella, neither for a sweather nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!"), "humidity", hasSize(5));
+                .body("funnyAdvice", hasItems("Not a good day for an umbrella, neither for a sweather nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!"), "humidity", hasSize(5));
     }
 
     /**

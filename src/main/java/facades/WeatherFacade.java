@@ -10,8 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errorhandling.NotFoundException;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import javax.ws.rs.WebApplicationException;
 
 /**
@@ -38,9 +43,15 @@ public class WeatherFacade extends DataFacade {
         return instance;
     }
 
-    public List<WeatherForecastDTO> getWeatherForecast(int citycode, int year, int month, int day) throws NotFoundException {
+    public List<WeatherForecastDTO> getWeatherForecast(int citycode, int year, int month, int day) throws NotFoundException, ParseException {
 
         try {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date today = new Date();
+            Date date = formatter.parse(year + "-" + month + "-" + day);
+
             List<WeatherForecastDTO> forecast = new ArrayList();
             String weatherJson = super.getData((citycode + "/" + year + "/" + month + "/" + day));
             WeatherForecast[] weather = GSON.fromJson(weatherJson, WeatherForecast[].class);
@@ -49,14 +60,29 @@ public class WeatherFacade extends DataFacade {
                 throw new WebApplicationException("No weatherforecast found for the date", 400);
             }
 
-            if (weather.length >= 5) {
-                for (int i = 0; i < 5; i++) {
-                    forecast.add(new WeatherForecastDTO(weather[i]));
-                }
+            if (date.after(today)) {
+
+                WeatherForecastDTO f = new WeatherForecastDTO(weather[0]);
+                f.setDateTime(weather[0].getApplicable_date());
+                forecast.add(f);
 
             } else {
-                for (WeatherForecast f : weather) {
-                    forecast.add(new WeatherForecastDTO(f));
+                if (weather.length >= 5) {
+
+                    for (int i = 0; i < 5; i++) {
+
+                        if (formatter.format(weather[i].getCreated()).equals(formatter.format(date))) {
+                            for (int j = 0; j < 5; j++) {
+                                forecast.add(new WeatherForecastDTO(weather[i + j]));
+                            }
+                            break;
+                        }
+                    }
+
+                } else {
+                    for (WeatherForecast f : weather) {
+                        forecast.add(new WeatherForecastDTO(f));
+                    }
                 }
             }
 
@@ -98,5 +124,17 @@ public class WeatherFacade extends DataFacade {
         } catch (IOException e) {
             throw new NotFoundException("The city doesnt exsist");
         }
+    }
+
+    public static void main(String[] args) throws ParseException, NotFoundException {
+        WeatherFacade f = WeatherFacade.getFacade();
+
+        // List<WeatherForecastDTO> wf = f.getWeatherForecast(1339615, 2017, 12, 12);
+        List<WeatherForecastDTO> wf = f.getWeatherForecast(2358492, 2016, 12, 11);
+
+        wf.forEach((w) -> {
+            System.out.println(w.getDateTime() + "Temp: " + w.getTemp() + " %: " + w.getPredictability());
+        });
+
     }
 }
