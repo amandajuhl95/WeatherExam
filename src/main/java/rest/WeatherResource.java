@@ -68,8 +68,30 @@ public class WeatherResource {
     @GET
     @Path("/city/{city}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getCityWeather(@PathParam("city") int citycode) {
-        return "{\"msg\":\"Weather prognosis for " + citycode + "\"}";
+    public List<WeatherForecastDTO> getCityWeather(@PathParam("city") String city) {
+        int citycode;
+
+        try {
+            if (!city.matches("[0-9]+")) {
+
+                CityDTO c = CF.getCity(city);
+                citycode = c.getCityCode();
+
+            } else {
+                citycode = Integer.parseInt(city);
+            }
+
+            if (citycode > 9999999 || citycode < 1000) {
+                throw new WebApplicationException("Citycodes must be between 4 and 7 digits", 400);
+            }
+
+            return WF.getWeatherForecasts(citycode);
+
+        } catch (NotFoundException | NumberFormatException | WebApplicationException ex) {
+
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+
     }
 
     @GET

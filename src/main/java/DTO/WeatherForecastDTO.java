@@ -8,6 +8,7 @@ package DTO;
 import facades.WeatherForecast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -26,6 +27,7 @@ public class WeatherForecastDTO {
     private int predictability;
     private String funnyAdvice;
     DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy kk:mm");
+    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public WeatherForecastDTO(WeatherForecast forecast) {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -83,6 +85,10 @@ public class WeatherForecastDTO {
 
     public String getDateTime() {
         return dateTime;
+    }
+    
+     public void setDateTime(Date dateTime) {
+        this.dateTime = dateFormatter.format(dateTime);
     }
 
     public String getWeatherStatus() {

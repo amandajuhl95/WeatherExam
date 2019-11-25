@@ -50,8 +50,41 @@ public class WeatherFacade extends DataFacade {
             }
 
             if (weather.length >= 5) {
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 5; i++) {
                     forecast.add(new WeatherForecastDTO(weather[i]));
+                }
+
+            } else {
+                for (WeatherForecast f : weather) {
+                    forecast.add(new WeatherForecastDTO(f));
+                }
+            }
+
+            return forecast;
+
+        } catch (IOException e) {
+            throw new NotFoundException("{\"message\":\" The city doesn't exsist\"}");
+        }
+    }
+    
+    public List<WeatherForecastDTO> getWeatherForecasts(int citycode) throws NotFoundException {
+
+        try {
+            List<WeatherForecastDTO> forecast = new ArrayList();
+            String weatherJson = super.getData(Integer.toString(citycode));
+            String weatherArray = weatherJson.split("\"consolidated_weather\":")[1].split(",\"time\"")[0];
+            WeatherForecast[] weather = GSON.fromJson(weatherArray, WeatherForecast[].class);
+
+            if (weather == null || weather.length <= 0) {
+                throw new WebApplicationException("No weatherforecast found for the date", 400);
+            }
+
+            if (weather.length >= 5) {
+                for (int i = 0; i < 5; i++) {
+                    
+                    WeatherForecastDTO f = new WeatherForecastDTO(weather[i]);
+                    f.setDateTime(weather[i].getApplicable_date());
+                    forecast.add(f);
                 }
 
             } else {

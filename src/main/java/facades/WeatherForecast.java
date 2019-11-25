@@ -23,9 +23,11 @@ public class WeatherForecast {
     private final int humidity;
     private final int predictability;
     private final Date created;
+    private final Date applicable_date;
     SimpleDateFormat formatter =  new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSS");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    public WeatherForecast(String weather_state_abbr, String weather_state_name, String the_temp, String wind_direction_compass, String wind_speed, String humidity, String predictability, String created) throws ParseException {
+    public WeatherForecast(String weather_state_abbr, String weather_state_name, String the_temp, String wind_direction_compass, String wind_speed, String humidity, String predictability, String created, String applicable_date) throws ParseException {
         this.weather_state_abbr = weather_state_abbr;
         this.weather_state_name = weather_state_name;
         this.the_temp = Double.parseDouble(the_temp);
@@ -34,6 +36,7 @@ public class WeatherForecast {
         this.humidity = Integer.parseInt(humidity);
         this.predictability = Integer.parseInt(predictability);
         this.created = formatter.parse(created);
+        this.applicable_date = dateFormatter.parse(applicable_date);
     }
 
     public String getWeather_state_abbr() {
@@ -66,6 +69,10 @@ public class WeatherForecast {
 
     public Date getCreated() {
         return created;
+    }
+
+    public Date getApplicable_date() {
+        return applicable_date;
     }
 
     
