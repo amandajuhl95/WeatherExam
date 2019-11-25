@@ -64,6 +64,9 @@ public class WeatherForecastDTO {
         else if ("Heavy Cloud".equals(weatherStatus)) {
             return "Goodbye sunshine the clouds have taken ower today";
         }
+           else if (temp < 15) {
+            return "Why would humanity even set foot in a place this cold!! our advice: leave, dont look back! just get out of there";
+        }
            else if (temp < 0) {
             return "snif snif... Whats that? hot coco on the stove?.. its freazing outside you better stay in and drink up!";
         }
