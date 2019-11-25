@@ -125,7 +125,7 @@ public class WeatherResourceTest {
                 .get("weather/city/" + 2151330).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("windDirection", hasSize(5), "funnyAdvice", hasSize(5));
+                .body("predictability", hasSize(5), "funnyAdvice", hasSize(5));
     }
 
     /**
