@@ -63,10 +63,10 @@ public class WeatherFacade extends DataFacade {
             return forecast;
 
         } catch (IOException e) {
-            throw new NotFoundException("{\"message\":\" The city doesn't exsist\"}");
+            throw new NotFoundException("The city doesnt exsist");
         }
     }
-    
+
     public List<WeatherForecastDTO> getWeatherForecasts(int citycode) throws NotFoundException {
 
         try {
@@ -81,7 +81,7 @@ public class WeatherFacade extends DataFacade {
 
             if (weather.length >= 5) {
                 for (int i = 0; i < 5; i++) {
-                    
+
                     WeatherForecastDTO f = new WeatherForecastDTO(weather[i]);
                     f.setDateTime(weather[i].getApplicable_date());
                     forecast.add(f);
@@ -96,7 +96,7 @@ public class WeatherFacade extends DataFacade {
             return forecast;
 
         } catch (IOException e) {
-            throw new NotFoundException("{\"message\":\" The city doesn't exsist\"}");
+            throw new NotFoundException("The city doesn't exsist");
         }
     }
 }

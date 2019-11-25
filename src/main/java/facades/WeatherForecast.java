@@ -14,7 +14,7 @@ import java.util.Date;
  * @author aamandajuhl
  */
 public class WeatherForecast {
-    
+
     private final String weather_state_abbr;
     private final String weather_state_name;
     private final double the_temp;
@@ -74,7 +74,7 @@ public class WeatherForecast {
     public Date getApplicable_date() {
         return applicable_date;
     }
-
+    
     
     
 }
