@@ -48,6 +48,7 @@ public class WeatherFacadeTest {
      * Test of getWeatherForecast method, of class WeatherFacade.
      *
      * @throws errorhandling.NotFoundException
+     * @throws java.text.ParseException
      */
     @Test
     public void testGetWeatherForecast() throws NotFoundException, ParseException {
@@ -62,10 +63,11 @@ public class WeatherFacadeTest {
     }
 
     /**
-     * Test of notFoundGetWeatherForecast method, of class WeatherFacade. Test
-     * error message 400, if the countrycode doesn't exsist.
+     * Test of notFoundGetWeatherForecast method, of class WeatherFacade.Test
+ error message 400, if the countrycode doesn't exsist.
      *
      * @throws errorhandling.NotFoundException
+     * @throws java.text.ParseException
      */
     @Test
     public void testNotFoundGetWeatherForecast() throws NotFoundException, ParseException {

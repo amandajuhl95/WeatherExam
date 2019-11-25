@@ -7,6 +7,7 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class DataFacadeTest {
      * @throws java.lang.Exception
      */
     @Test
-    public void testGetData() throws Exception {
+    public void testGetData() throws IOException {
         Gson GSON = new GsonBuilder().setPrettyPrinting().create();
         System.out.println("getData");
 
