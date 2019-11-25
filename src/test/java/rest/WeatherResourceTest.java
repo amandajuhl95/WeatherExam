@@ -58,9 +58,10 @@ public class WeatherResourceTest {
     /**
      * Test of getCountries method, of class WeatherResource.
      *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCountries() {
+    public void testGetCountries() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/countries").then()
@@ -72,9 +73,10 @@ public class WeatherResourceTest {
     /**
      * Test of getCountry method, of class WeatherResource.
      *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCountry() {
+    public void testGetCountry() throws Exception {
 
         given()
                 .contentType("application/json")
@@ -86,12 +88,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of NegativeGetCountry method, of class WeatherResource. Test the
+     * Test of NegativeGetCountry method, of class WeatherResource.Test the
      * error message 400, if the given countrycode is outside the range from 7 -
      * 8 digits.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testNegativeGetCountry() {
+    public void testNegativeGetCountry() throws Exception {
 
         given()
                 .contentType("application/json")
@@ -104,9 +108,11 @@ public class WeatherResourceTest {
 
     /**
      * Test of getCityWeatherByName method, of class WeatherResource.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityWeatherByName() {
+    public void testGetCityWeatherByName() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/london").then()
@@ -117,9 +123,11 @@ public class WeatherResourceTest {
 
     /**
      * Test of getCityWeatherByCityCode method, of class WeatherResource.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityWeatherCityCode() {
+    public void testGetCityWeatherCityCode() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 2151330).then()
@@ -129,12 +137,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getNegativeCityWeather method, of class WeatherResource. Test the
+     * Test of getNegativeCityWeather method, of class WeatherResource.Test the
      * error message 400, if the given countrycode is outside the range from 7 -
      * 8 digits.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testNegativeGetCityWeather() {
+    public void testNegativeGetCityWeather() throws Exception {
 
         given()
                 .contentType("application/json")
@@ -147,9 +157,11 @@ public class WeatherResourceTest {
 
     /**
      * Test of getCityWeatherByDate method, of class WeatherResource.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityWeatherByDate() {
+    public void testGetCityWeatherByDate() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368148 + "/" + 2013 + "/" + 12 + "/" + 12).then()
@@ -159,12 +171,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getNegativeCityWeatherByDate method, of class WeatherResource.
-     * Test the error message 400, if the given citycode is outside the range of
-     * 4 to 7 digits.
+     * Test of getNegativeCityWeatherByDate method, of class
+     * WeatherResource.Test the error message 400, if the given citycode is
+     * outside the range of 4 to 7 digits.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetNegativeCityWeatherByDate() {
+    public void testGetNegativeCityWeatherByDate() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368 + "/" + 2013 + "/" + 12 + "/" + 12).then()
@@ -174,12 +188,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getCityWeatherByNegativeDate method, of class WeatherResource.
-     * Test the error message 400, if the given date doesn't exsist in the
-     * calendar.
+     * Test of getCityWeatherByNegativeDate method, of class
+     * WeatherResource.Test the error message 400, if the given date doesn't
+     * exsist in the calendar.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityWeatherByNegativeDate() {
+    public void testGetCityWeatherByNegativeDate() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368148 + "/" + 2010 + "/" + 1 + "/" + 12).then()
@@ -189,12 +205,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getCityWeatherByNotFoundDate method, of class WeatherResource.
-     * Test the error message 400, if the given year > current year + 1.
+     * Test of getCityWeatherByNotFoundDate method, of class
+     * WeatherResource.Test the error message 400, if the given year > current
+     * year + 1.
      *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityWeatherByNotFoundDate() {
+    public void testGetCityWeatherByNotFoundDate() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368148 + "/" + 2021 + "/" + 12 + "/" + 12).then()
@@ -204,12 +222,14 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getCityNegativeWeatherByDate method, of class WeatherResource.
-     * Test the error message 400, if there is no weatherforecast for the given
-     * date.
+     * Test of getCityNegativeWeatherByDate method, of class
+     * WeatherResource.Test the error message 400, if there is no
+     * weatherforecast for the given date.
+     *
+     * @throws java.lang.Exception
      */
     @Test
-    public void testGetCityNegativeWeatherByDate() {
+    public void testGetCityNegativeWeatherByDate() throws Exception {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 2151330 + "/" + 2020 + "/" + 12 + "/" + 12).then()
