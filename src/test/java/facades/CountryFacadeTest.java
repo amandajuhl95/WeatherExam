@@ -32,12 +32,12 @@ public class CountryFacadeTest {
         emf = EMF_Creator.createEntityManagerFactory(DbSelector.TEST, Strategy.DROP_AND_CREATE);
         facade = CountryFacade.getFacade(emf);
         EntityManager em = emf.createEntityManager();
-        
+
         Country c1 = new Country("Spain", 23424950);
         Country c2 = new Country("Denmark", 23424796);
         Country c3 = new Country("North Korea", 23424865);
-        
-         try {
+
+        try {
             em.getTransaction().begin();
             em.createNamedQuery("Country.deleteAllRows").executeUpdate();
 
@@ -71,6 +71,7 @@ public class CountryFacadeTest {
 
     /**
      * Test of getCountries method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
@@ -82,6 +83,7 @@ public class CountryFacadeTest {
 
     /**
      * Test of getCities method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
@@ -90,9 +92,10 @@ public class CountryFacadeTest {
         List<CityDTO> cities = facade.getCities(23424848);
         assertEquals(9, cities.size());
     }
-    
+
     /**
      * Test of getCities method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
@@ -101,9 +104,10 @@ public class CountryFacadeTest {
         List<CityDTO> cities = facade.getCities(23424975);
         assertEquals(52, cities.size());
     }
-    
+
     /**
      * Test of getCities method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
@@ -112,9 +116,10 @@ public class CountryFacadeTest {
         List<CityDTO> cities = facade.getCities(23424977);
         assertEquals(78, cities.size());
     }
-    
+
     /**
      * Test of getCities method, of class CountryFacade.
+     *
      * @throws errorhandling.NotFoundException
      */
     @Test
@@ -128,5 +133,37 @@ public class CountryFacadeTest {
             assertEquals("Requested cities could not be found", ex.getMessage());
 
         }
+    }
+
+    /**
+     * Test of getCity method, of class CountryFacade.
+     *
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testGetCity() throws NotFoundException {
+        System.out.println("getCity");
+
+        CityDTO city = facade.getCity("Copenhagen");
+        assertEquals(city.getCityCode(), 554890);
+
+    }
+
+    /**
+     * Test of NegativeGetCity method, of class CountryFacade.
+     *
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testNegativeGetCity() throws NotFoundException {
+        System.out.println("getNegativeCity");
+
+        try {
+            facade.getCity("Riga");
+            fail();
+        } catch (NotFoundException ex) {
+            assertEquals("Requested city could not be found", ex.getMessage());
+        }
+
     }
 }

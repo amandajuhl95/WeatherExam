@@ -96,7 +96,7 @@ public class WeatherFacade extends DataFacade {
             return forecast;
 
         } catch (IOException e) {
-            throw new NotFoundException("The city doesn't exsist");
+            throw new NotFoundException("The city doesnt exsist");
         }
     }
 }

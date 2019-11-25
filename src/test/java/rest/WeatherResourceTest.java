@@ -14,9 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,15 +49,6 @@ public class WeatherResourceTest {
         httpServer.shutdownNow();
     }
 
-    @BeforeEach
-    public void setUp() {
-
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
@@ -68,9 +57,10 @@ public class WeatherResourceTest {
 
     /**
      * Test of getCountries method, of class WeatherResource.
+     *
      */
     @Test
-    public void testGetCountries() throws Exception {
+    public void testGetCountries() {
         given()
                 .contentType("application/json")
                 .get("weather/countries").then()
@@ -81,9 +71,10 @@ public class WeatherResourceTest {
 
     /**
      * Test of getCountry method, of class WeatherResource.
+     *
      */
     @Test
-    public void testGetCountry() throws Exception {
+    public void testGetCountry() {
 
         given()
                 .contentType("application/json")
@@ -95,12 +86,12 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getNegativCountry method, of class WeatherResource. Test the
+     * Test of NegativeGetCountry method, of class WeatherResource. Test the
      * error message 400, if the given countrycode is outside the range from 7 -
      * 8 digits.
      */
     @Test
-    public void testGetNegativCountry() {
+    public void testNegativeGetCountry() {
 
         given()
                 .contentType("application/json")
@@ -111,20 +102,49 @@ public class WeatherResourceTest {
 
     }
 
-//    /**
-//     * Test of getCityWeather method, of class WeatherResource.
-//     */
-//    @Test
-//    public void testGetCityWeather() {
-//        System.out.println("getCityWeather");
-//        int citycode = 0;
-//        WeatherResource instance = new WeatherResource();
-//        String expResult = "";
-//        String result = instance.getCityWeather(citycode);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of getCityWeatherByName method, of class WeatherResource.
+     */
+    @Test
+    public void testGetCityWeatherByName() {
+        given()
+                .contentType("application/json")
+                .get("weather/city/london").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("windDirection", hasSize(5), "funnyAdvice", hasSize(5));
+    }
+
+    /**
+     * Test of getCityWeatherByCityCode method, of class WeatherResource.
+     */
+    @Test
+    public void testGetCityWeatherCityCode() {
+        given()
+                .contentType("application/json")
+                .get("weather/city/" + 2151330).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("windDirection", hasSize(5), "funnyAdvice", hasSize(5));
+    }
+
+    /**
+     * Test of getNegativeCityWeather method, of class WeatherResource. Test the
+     * error message 400, if the given countrycode is outside the range from 7 -
+     * 8 digits.
+     */
+    @Test
+    public void testNegativeGetCityWeather() {
+
+        given()
+                .contentType("application/json")
+                .get("weather/city/" + 215354244).then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
+                .body("code", equalTo(400), "message", equalTo("Citycodes must be between 4 and 7 digits"));
+
+    }
+
     /**
      * Test of getCityWeatherByDate method, of class WeatherResource.
      */
@@ -135,16 +155,16 @@ public class WeatherResourceTest {
                 .get("weather/city/" + 368148 + "/" + 2013 + "/" + 12 + "/" + 12).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("funnyAdvice", hasItem("Remember your umbrella today!"), "humidity", hasSize(6));
+                .body("funnyAdvice", hasItem("Not a good day for an umbrella, neither for a sweather nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!"), "humidity", hasSize(5));
     }
 
     /**
-     * Test of getNegativCityWeatherByDate method, of class WeatherResource.
+     * Test of getNegativeCityWeatherByDate method, of class WeatherResource.
      * Test the error message 400, if the given citycode is outside the range of
      * 4 to 7 digits.
      */
     @Test
-    public void testGetNegativCityWeatherByDate() {
+    public void testGetNegativeCityWeatherByDate() {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368 + "/" + 2013 + "/" + 12 + "/" + 12).then()
@@ -154,12 +174,12 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getCityWeatherByNegativDate method, of class WeatherResource.
+     * Test of getCityWeatherByNegativeDate method, of class WeatherResource.
      * Test the error message 400, if the given date doesn't exsist in the
      * calendar.
      */
     @Test
-    public void testGetCityWeatherByNegativDate() {
+    public void testGetCityWeatherByNegativeDate() {
         given()
                 .contentType("application/json")
                 .get("weather/city/" + 368148 + "/" + 2010 + "/" + 1 + "/" + 12).then()
@@ -169,9 +189,8 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of getCityWeatherByNegativDate method, of class WeatherResource.
-     * Test the error message 400, if the given year is to far out in the
-     * future.
+     * Test of getCityWeatherByNotFoundDate method, of class WeatherResource.
+     * Test the error message 400, if the given year > current year + 1.
      *
      */
     @Test
@@ -183,7 +202,20 @@ public class WeatherResourceTest {
                 .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
                 .body("code", equalTo(400), "message", equalTo("Obviously we cant predict the weather THAT far ahead"));
     }
-    
-    
+
+    /**
+     * Test of getCityNegativeWeatherByDate method, of class WeatherResource.
+     * Test the error message 400, if there is no weatherforecast for the given
+     * date.
+     */
+    @Test
+    public void testGetCityNegativeWeatherByDate() {
+        given()
+                .contentType("application/json")
+                .get("weather/city/" + 2151330 + "/" + 2020 + "/" + 12 + "/" + 12).then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
+                .body("code", equalTo(400), "message", equalTo("No weatherforecast found for the date"));
+    }
 
 }

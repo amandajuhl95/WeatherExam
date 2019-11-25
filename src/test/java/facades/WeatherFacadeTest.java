@@ -7,19 +7,14 @@ package facades;
 
 import DTO.WeatherForecastDTO;
 import errorhandling.NotFoundException;
-import static facades.WeatherFacade.getFacade;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author aamandajuhl
- */
+//Uncomment the line below, to temporarily disable this test
+//@Disabled
 public class WeatherFacadeTest {
 
     private static WeatherFacade facade;
@@ -36,27 +31,32 @@ public class WeatherFacadeTest {
     public static void tearDownClass() {
     }
 
-    @BeforeEach
-    public void setUp() {
-    }
+    /**
+     * Test of getFacade method, of class CountryFacade.
+     */
+    @Test
+    public void testGetFacade() {
+        System.out.println("getWeatherFacade");
 
-    @AfterEach
-    public void tearDown() {
+        WeatherFacade expResult = facade;
+        WeatherFacade result = WeatherFacade.getFacade();
+        assertEquals(expResult, result);
     }
 
     /**
      * Test of getWeatherForecast method, of class WeatherFacade.
+     *
+     * @throws errorhandling.NotFoundException
      */
     @Test
-    public void testGetWeatherForecast() throws Exception {
+    public void testGetWeatherForecast() throws NotFoundException {
         System.out.println("getWeatherForecast");
-        int citycode = 44418;
-        int year = 2013;
-        int month = 4;
-        int day = 27;
+
         double expResult = 9.85;
-        List<WeatherForecastDTO> result = facade.getWeatherForecast(citycode, year, month, day);
+        List<WeatherForecastDTO> result = facade.getWeatherForecast(44418, 2013, 4, 27);
+
         assertEquals(expResult, result.get(0).getWindSpeed());
+        assertEquals(5, result.size());
 
     }
 
@@ -68,34 +68,46 @@ public class WeatherFacadeTest {
      */
     @Test
     public void testNotFoundGetWeatherForecast() throws NotFoundException {
-        System.out.println("Negative countrycode");
+        System.out.println("Negative countrycode for 1 day prognosis");
         try {
             facade.getWeatherForecast(368147, 2020, 12, 12);
             fail();
         } catch (NotFoundException ex) {
-
             assertEquals("The city doesnt exsist", ex.getMessage());
-
         }
     }
 
     /**
-     * Test of negativeGetWeatherForecast method, of class WeatherFacade. Test
-     * error message 400, if the weather forecast for the given city and date
-     * doesn't exsist.
+     * Test of getWeatherForecasts method, of class WeatherFacade.
      *
      * @throws errorhandling.NotFoundException
      */
     @Test
-    public void testNegativeGetWeatherForecast() throws NotFoundException {
-        System.out.println("Negative getWeatherForecast");
+    public void testGetWeatherForecasts() throws NotFoundException {
+        System.out.println("getWeatherForecasts");
+
+        String expResult = "It's cold outside, were a sweater... or die";
+        List<WeatherForecastDTO> result = facade.getWeatherForecasts(2151330);
+
+        assertEquals(expResult, result.get(0).getFunnyAdvice());
+        assertEquals(5, result.size());
+
+    }
+
+    /**
+     * Test of notFoundGetWeatherForecasts method, of class WeatherFacade. Test
+     * error message 400, if the countrycode doesn't exsist.
+     *
+     * @throws errorhandling.NotFoundException
+     */
+    @Test
+    public void testNotFoundGetWeatherForecasts() throws NotFoundException {
+        System.out.println("Negative countrycode for 5 day prognose");
         try {
-            facade.getWeatherForecast(368148, 2020, 12, 12);
+            facade.getWeatherForecasts(2151331);
             fail();
         } catch (NotFoundException ex) {
-
-            assertEquals("No weatherforecast found for the date", ex.getMessage());
-
+            assertEquals("The city doesnt exsist", ex.getMessage());
         }
     }
 
