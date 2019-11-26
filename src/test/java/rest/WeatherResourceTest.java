@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class WeatherResourceTest {
 
     private static final int SERVER_PORT = 7777;
@@ -52,7 +52,7 @@ public class WeatherResourceTest {
     @BeforeEach
     public void setUp() {
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.MINUTES.sleep(1);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
