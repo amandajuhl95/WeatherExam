@@ -1,20 +1,27 @@
 package rest;
 
+import DTO.CountryDTO;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.hamcrest.MatcherAssert;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +50,16 @@ public class WeatherResourceTest {
         RestAssured.defaultParser = Parser.JSON;
     }
 
+    @BeforeEach
+    public void setUp() {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            System.out.println("I was in here");
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @AfterAll
     public static void closeTestServer() {
         EMF_Creator.endREST_TestWithDB();
@@ -61,12 +78,16 @@ public class WeatherResourceTest {
      */
     @Test
     public void testGetCountries() {
-        given()
+
+        CountryDTO[] countries = given()
                 .contentType("application/json")
                 .get("weather/countries").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("countryCode", hasSize(58), "name", hasSize(58));
+                .extract().as(CountryDTO[].class);
+        
+        assertEquals(121, countries.length);
+
     }
 
     /**
