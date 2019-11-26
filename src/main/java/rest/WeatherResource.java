@@ -9,6 +9,7 @@ import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
 import facades.WeatherFacade;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -19,7 +20,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-//Todo Remove or change relevant parts before ACTUAL use
 @Path("weather")
 public class WeatherResource {
 
@@ -31,7 +31,7 @@ public class WeatherResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
-        return "{\"msg\":\"Hello to TheCloud\"}";
+        return "{\"msg\":\"Hello to The Weathercloud\"}";
     }
 
     @GET
@@ -127,7 +127,7 @@ public class WeatherResource {
 
             return WF.getWeatherForecast(citycode, year, month, day);
 
-        } catch (Exception ex) {
+        } catch (NotFoundException | NumberFormatException | ParseException | WebApplicationException ex) {
 
             throw new WebApplicationException(ex.getMessage(), 400);
         }

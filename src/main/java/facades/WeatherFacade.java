@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errorhandling.NotFoundException;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class WeatherFacade extends DataFacade {
             } else {
                 if (weather.length >= 5) {
 
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < weather.length; i++) {
 
                         if (formatter.format(weather[i].getCreated()).equals(formatter.format(date))) {
                             for (int j = 0; j < 5; j++) {
