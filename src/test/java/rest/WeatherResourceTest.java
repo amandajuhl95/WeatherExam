@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class WeatherResourceTest {
 
     private static final int SERVER_PORT = 7777;
@@ -47,15 +47,6 @@ public class WeatherResourceTest {
         RestAssured.baseURI = SERVER_URL;
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
-    }
-
-    @BeforeEach
-    public void setUp() {
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     @AfterAll
