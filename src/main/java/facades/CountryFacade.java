@@ -89,10 +89,12 @@ public class CountryFacade extends DataFacade {
 
         try {
             CityDTO[] city = GSON.fromJson(super.getData("search/?query=" + cityname.toLowerCase()), CityDTO[].class);
-            
-            if(city.length > 0) return city[0];
-            
-            throw new NotFoundException("Requested city could not be found");
+
+            if (city.length == 0) {
+                throw new NotFoundException("Requested city could not be found");
+            }
+
+            return city[0];
 
         } catch (JsonSyntaxException | IOException e) {
             throw new NotFoundException("Requested city could not be found");
