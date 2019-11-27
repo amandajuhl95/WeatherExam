@@ -28,6 +28,10 @@ public class EventFacade {
     Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static EventFacade instance;
 
+    public EventFacade() {
+    }
+    
+
     public static EventFacade getEventFacade() {
         if (instance == null) {
 
@@ -35,6 +39,8 @@ public class EventFacade {
         }
         return instance;
     }
+    
+    
 
     private String fetchEvents(String start, String end, String country, String city) throws MalformedURLException, IOException {
 
