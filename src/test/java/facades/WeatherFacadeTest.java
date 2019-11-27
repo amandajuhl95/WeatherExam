@@ -54,7 +54,7 @@ public class WeatherFacadeTest {
     public void testGetWeatherForecast() throws NotFoundException, ParseException {
         System.out.println("getWeatherForecast");
 
-        double expResult = 9.85;
+        double expResult = 10.17;
         List<WeatherForecastDTO> result = facade.getWeatherForecast(44418, 2013, 4, 27);
 
         assertEquals(expResult, result.get(0).getWindSpeed());
