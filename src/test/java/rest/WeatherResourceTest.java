@@ -92,9 +92,9 @@ public class WeatherResourceTest {
     }
 
     /**
-     * Test of NegativeGetCountry method, of class WeatherResource.Test the
+     * Test of NegativeGetCountry method, of class WeatherResource. Test the
      * error message 400, if the given countrycode is outside the range from 7 -
-     * 8 digits.
+     * 8 digits
      *
      */
     @Test

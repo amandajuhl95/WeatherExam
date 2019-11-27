@@ -85,36 +85,36 @@ public class CountryFacade extends DataFacade {
         }
     }
 
-    public void colorAlgorithm(List<CountryDTO> countries) throws NotFoundException {
-        try {
-            ExecutorService executor = Executors.newFixedThreadPool(countries.size());
-            Queue<Future<String>> queue = new ArrayBlockingQueue(countries.size());
-
-            WeatherFacade WF = WeatherFacade.getFacade();
-            for (CountryDTO country : countries) {
-
-                Future<String> future = executor.submit(() -> {
-                    CityDTO city = getCities(country.getCountryCode()).get(0);
-                    WeatherForecastDTO forecast = WF.getWeatherForecasts(city.getCityCode()).get(0);
-                    country.setColorCode(forecast.getTemp());
-                    return country.getName();
-                });
-                
-                queue.add(future);
-            }
-            while (!queue.isEmpty()) {
-                Future<String> task = queue.poll();
-                if (!task.isDone()) {
-                    queue.add(task);
-                } 
-            }
-            executor.shutdown();
-            executor.awaitTermination(1, TimeUnit.DAYS);
-
-        } catch (InterruptedException e) {
-            throw new NotFoundException("Colorcode could not be generated");
-        }
-    }
+//    public void colorAlgorithm(List<CountryDTO> countries) throws NotFoundException {
+//        try {
+//            ExecutorService executor = Executors.newFixedThreadPool(countries.size());
+//            Queue<Future<String>> queue = new ArrayBlockingQueue(countries.size());
+//
+//            WeatherFacade WF = WeatherFacade.getFacade();
+//            for (CountryDTO country : countries) {
+//
+//                Future<String> future = executor.submit(() -> {
+//                    CityDTO city = getCities(country.getCountryCode()).get(0);
+//                    WeatherForecastDTO forecast = WF.getWeatherForecasts(city.getCityCode()).get(0);
+//                    country.setColorCode(forecast.getTemp());
+//                    return country.getName();
+//                });
+//                
+//                queue.add(future);
+//            }
+//            while (!queue.isEmpty()) {
+//                Future<String> task = queue.poll();
+//                if (!task.isDone()) {
+//                    queue.add(task);
+//                } 
+//            }
+//            executor.shutdown();
+//            executor.awaitTermination(1, TimeUnit.DAYS);
+//
+//        } catch (InterruptedException e) {
+//            throw new NotFoundException("Colorcode could not be generated");
+//        }
+//    }
 
     public CityDTO getCity(String cityname) throws NotFoundException {
 

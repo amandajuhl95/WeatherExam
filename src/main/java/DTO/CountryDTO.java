@@ -16,7 +16,7 @@ public class CountryDTO {
     private final String title;
     private final int woeid;
     private List<CityDTO> children;
-    private double colorCode;
+    //private double colorCode;
     Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     //Constructor for countries in the database
@@ -52,13 +52,13 @@ public class CountryDTO {
         return woeid;
     }
 
-    public double getColorCode() {
-        return colorCode;
-    }
-
-    public void setColorCode(double colorCode) {
-        this.colorCode = colorCode;
-    }
+//    public double getColorCode() {
+//        return colorCode;
+//    }
+//
+//    public void setColorCode(double colorCode) {
+//        this.colorCode = colorCode;
+//    }
     
     
     
