@@ -2,17 +2,22 @@ package rest;
 
 import DTO.CityDTO;
 import DTO.CountryDTO;
+import DTO.EventDTO;
 import DTO.WeatherForecastDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
+import facades.EventFacade;
+import static facades.EventFacade.getEventFacade;
 import facades.WeatherFacade;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -27,6 +32,7 @@ public class WeatherResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     private static final CountryFacade CF = CountryFacade.getFacade(EMF);
     private static final WeatherFacade WF = WeatherFacade.getFacade();
+    private static final EventFacade EF = EventFacade.getEventFacade();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -152,5 +158,23 @@ public class WeatherResource {
         }
 
     }
+    
+    
+//    
+//     @GET
+//    @Path("/events/{country}/{city}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public List<EventDTO> getEvents(@PathParam("country") String country, @PathParam("city") String city) {
+//  
+//       
+//        try {
+//  
+//            return EF.getEvents(country, city);
+//
+//        } catch (NotFoundException ex) {
+//            throw new WebApplicationException(ex.getMessage(), 400);
+//        }
+//       
+//    }
 
 }
