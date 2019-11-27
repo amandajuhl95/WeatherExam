@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import utils.EMF_Creator;
 
 public class CountryFacade extends DataFacade {
 
@@ -115,7 +114,6 @@ public class CountryFacade extends DataFacade {
         } catch (InterruptedException e) {
             throw new NotFoundException("Colorcode could not be generated");
         }
-
     }
 
     public CityDTO getCity(String cityname) throws NotFoundException {

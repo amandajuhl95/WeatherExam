@@ -42,6 +42,21 @@ public class WeatherResource {
 
         try {
             List<CountryDTO> countries = CF.getCountries();
+            return countries;
+
+        } catch (NotFoundException ex) {
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+        
+    }
+    
+    @GET
+    @Path("/colorcodes")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<CountryDTO> getColorCountries() {
+
+        try {
+            List<CountryDTO> countries = CF.getCountries();
             CF.colorAlgorithm(countries);
             
             return countries;
