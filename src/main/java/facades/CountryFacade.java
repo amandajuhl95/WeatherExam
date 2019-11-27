@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import utils.EMF_Creator;
 
 public class CountryFacade extends DataFacade {
 
@@ -77,7 +76,6 @@ public class CountryFacade extends DataFacade {
             UK.getCities().forEach((state) -> {
                 countryDTO.add(new CountryDTO(state));
             });
-            colorAlgorithm(countryDTO);
             return countryDTO;
 
         } catch (JsonSyntaxException | IOException e) {
@@ -87,31 +85,37 @@ public class CountryFacade extends DataFacade {
         }
     }
 
-    
-    private void colorAlgorithm(List<CountryDTO> countries) throws NotFoundException, IOException{
-        WeatherFacade WF = WeatherFacade.getFacade();
-        for (CountryDTO country : countries) {
-            CityDTO city = getCities(country.getCountryCode()).get(0);
-            int cityCode = city.getCityCode();
-            WeatherForecastDTO forecast = WF.getWeatherForecasts(cityCode).get(0);
-            double temp = forecast.getTemp();
-            country.setColorCode(temp);
-        }
+    public void colorAlgorithm(List<CountryDTO> countries) throws NotFoundException {
+        try {
+            ExecutorService executor = Executors.newFixedThreadPool(countries.size());
+            Queue<Future<String>> queue = new ArrayBlockingQueue(countries.size());
 
-        
-        
-    }
-    
-    public static void main(String[] args) {
-        
-        CountryFacade CF = getFacade(EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE));
-        try{
-      List<CountryDTO> contries =  CF.getCountries();
-        }catch( Exception e){
-            System.out.println("Damm dude..:  " + e.getMessage());
+            WeatherFacade WF = WeatherFacade.getFacade();
+            for (CountryDTO country : countries) {
+
+                Future<String> future = executor.submit(() -> {
+                    CityDTO city = getCities(country.getCountryCode()).get(0);
+                    WeatherForecastDTO forecast = WF.getWeatherForecasts(city.getCityCode()).get(0);
+                    country.setColorCode(forecast.getTemp());
+                    return country.getName();
+                });
+                
+                queue.add(future);
+            }
+            while (!queue.isEmpty()) {
+                Future<String> task = queue.poll();
+                if (!task.isDone()) {
+                    queue.add(task);
+                } 
+            }
+            executor.shutdown();
+            executor.awaitTermination(1, TimeUnit.DAYS);
+
+        } catch (InterruptedException e) {
+            throw new NotFoundException("Colorcode could not be generated");
         }
-        
     }
+
     public CityDTO getCity(String cityname) throws NotFoundException {
 
         try {

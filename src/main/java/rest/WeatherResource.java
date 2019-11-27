@@ -9,6 +9,7 @@ import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
 import facades.WeatherFacade;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
@@ -40,12 +41,30 @@ public class WeatherResource {
     public List<CountryDTO> getCountries() {
 
         try {
-            return CF.getCountries();
+            List<CountryDTO> countries = CF.getCountries();
+            return countries;
 
         } catch (NotFoundException ex) {
-
             throw new WebApplicationException(ex.getMessage(), 400);
         }
+        
+    }
+    
+    @GET
+    @Path("/colorcodes")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<CountryDTO> getColorCountries() {
+
+        try {
+            List<CountryDTO> countries = CF.getCountries();
+            CF.colorAlgorithm(countries);
+            
+            return countries;
+
+        } catch (NotFoundException ex) {
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+        
     }
 
     @GET
