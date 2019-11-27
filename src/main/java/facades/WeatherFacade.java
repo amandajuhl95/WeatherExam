@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -84,7 +85,9 @@ public class WeatherFacade extends DataFacade {
                     }
                 }
             }
-
+            
+            Collections.reverse(forecast);
+            
             return forecast;
 
         } catch (IOException e) {
@@ -101,7 +104,7 @@ public class WeatherFacade extends DataFacade {
             WeatherForecast[] weather = GSON.fromJson(weatherArray, WeatherForecast[].class);
 
             if (weather == null || weather.length <= 0) {
-                throw new WebApplicationException("No weatherforecast found for the date", 400);
+                throw new WebApplicationException("No weatherforecast was found", 400);
             }
 
             if (weather.length >= 5) {
