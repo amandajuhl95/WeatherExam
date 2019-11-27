@@ -2,6 +2,7 @@ package facades;
 
 import DTO.CityDTO;
 import DTO.CountryDTO;
+import DTO.WeatherForecastDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import utils.EMF_Creator;
 
 public class CountryFacade extends DataFacade {
 
@@ -75,7 +77,7 @@ public class CountryFacade extends DataFacade {
             UK.getCities().forEach((state) -> {
                 countryDTO.add(new CountryDTO(state));
             });
-
+            colorAlgorithm(countryDTO);
             return countryDTO;
 
         } catch (JsonSyntaxException | IOException e) {
@@ -85,6 +87,31 @@ public class CountryFacade extends DataFacade {
         }
     }
 
+    
+    private void colorAlgorithm(List<CountryDTO> countries) throws NotFoundException, IOException{
+        WeatherFacade WF = WeatherFacade.getFacade();
+        for (CountryDTO country : countries) {
+            CityDTO city = getCities(country.getCountryCode()).get(0);
+            int cityCode = city.getCityCode();
+            WeatherForecastDTO forecast = WF.getWeatherForecasts(cityCode).get(0);
+            double temp = forecast.getTemp();
+            country.setColorCode(temp);
+        }
+
+        
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        CountryFacade CF = getFacade(EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE));
+        try{
+      List<CountryDTO> contries =  CF.getCountries();
+        }catch( Exception e){
+            System.out.println("Damm dude..:  " + e.getMessage());
+        }
+        
+    }
     public CityDTO getCity(String cityname) throws NotFoundException {
 
         try {
