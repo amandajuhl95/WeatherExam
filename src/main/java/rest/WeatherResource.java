@@ -187,5 +187,28 @@ public class WeatherResource {
         }
        
     }
+    
+        @GET
+    @Path("/events/{country}/{city}/{year}/{month}/{day}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<EventDTO> getEventsByDate(@PathParam("country") String country,@PathParam("city") String city, 
+                                          @PathParam("year") String year,@PathParam("month") String month,
+                                          @PathParam("day") String day) 
+    {
+        
+        
+        try {
+  
+              SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       
+              String date = year+"-"+month+"-"+day;
+       
+            return EF.getEvents(date, date, country, city);
+
+        } catch (NotFoundException ex) {
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+       
+    }
 
 }

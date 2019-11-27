@@ -67,13 +67,9 @@ String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city
         
         
          try {
-        
-
-         
-            List<EventDTO> eventsList = new ArrayList();
+          List<EventDTO> eventsList = new ArrayList();
           String JsonEvents = EF.fetchEvents(Endpoint);
-             System.out.println(JsonEvents);
-            EventDTO[] events = GSON.fromJson(JsonEvents, EventDTO[].class);
+          EventDTO[] events = GSON.fromJson(JsonEvents, EventDTO[].class);
 
             if (events == null || events.length <= 0) {
                 throw new WebApplicationException("No Events was found", 400);
@@ -90,7 +86,12 @@ String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city
            
 
         } catch (IOException e) {
-            throw new NotFoundException("Events is not our thing so bear with us");
+            if(e.getMessage()=="No events for this City exists"){
+            return new ArrayList();
+            }
+            else{
+            throw new NotFoundException("There are no events in that city for the given date");
+            }
         }
 
     }
