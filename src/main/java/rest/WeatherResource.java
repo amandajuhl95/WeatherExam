@@ -14,7 +14,9 @@ import static facades.EventFacade.getEventFacade;
 import facades.WeatherFacade;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -160,21 +162,30 @@ public class WeatherResource {
     }
     
     
-//    
-//     @GET
-//    @Path("/events/{country}/{city}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public List<EventDTO> getEvents(@PathParam("country") String country, @PathParam("city") String city) {
-//  
-//       
-//        try {
-//  
-//            return EF.getEvents(country, city);
-//
-//        } catch (NotFoundException ex) {
-//            throw new WebApplicationException(ex.getMessage(), 400);
-//        }
-//       
-//    }
+    
+     @GET
+    @Path("/events/{country}/{city}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<EventDTO> getEvents(@PathParam("country") String country, @PathParam("city") String city) {
+        
+        
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       Calendar today = Calendar.getInstance();
+       Calendar fourDaysForward = Calendar.getInstance();
+       fourDaysForward.setTime(new Date()); // Now use today date.
+       fourDaysForward.add(Calendar.DATE, 4); // Adding 4 days
+
+        String start = sdf.format(today.getTime());
+        String end = sdf.format(fourDaysForward.getTime());
+        
+        try {
+  
+            return EF.getEvents(start, end, country, city);
+
+        } catch (NotFoundException ex) {
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+       
+    }
 
 }

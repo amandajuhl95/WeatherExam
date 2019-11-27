@@ -48,7 +48,7 @@ public class EventFacade {
         URL url = new URL("https://runivn.dk/3SEMPROJECT/api/resource/events"+ endpoint);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
+        con.setRequestProperty("Accept", "application/json;charset=ISO-8859-1");
         Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;
         if (scan.hasNext()) {
@@ -59,30 +59,9 @@ public class EventFacade {
     
     }
 
-    public List<EventDTO> getEvents(String country, String city) throws NotFoundException {
+    public List<EventDTO> getEvents(String start, String end, String country, String city) throws NotFoundException {
          EventFacade EF = getEventFacade();
-        
-//      const getEvents = (startDate, endDate, country, city) => {
-//    const start = parseDate(startDate);
-//    const end = parseDate(endDate);
-//
-//    const payload = `events?startdate=${start}&enddate=${end}&country=${country}&city=${city}`;
-//
-//    return fetch(onlineURL + payload).then(handleHttpErrors);
-    
-    
-    
-    
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    
-Calendar today = Calendar.getInstance();
-Calendar fourDaysForward = Calendar.getInstance();
-fourDaysForward.setTime(new Date()); // Now use today date.
-fourDaysForward.add(Calendar.DATE, 4); // Adding 4 days
 
-String start = sdf.format(today.getTime());
-
-String end = sdf.format(fourDaysForward.getTime());
 
 String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city="+city;
         
@@ -93,7 +72,7 @@ String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city
          
             List<EventDTO> eventsList = new ArrayList();
           String JsonEvents = EF.fetchEvents(Endpoint);
-          
+             System.out.println(JsonEvents);
             EventDTO[] events = GSON.fromJson(JsonEvents, EventDTO[].class);
 
             if (events == null || events.length <= 0) {
@@ -102,7 +81,7 @@ String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city
 
              
                 for (EventDTO e : events) {
-                   
+                  
                     eventsList.add(e);
                 }
             
@@ -116,10 +95,7 @@ String Endpoint = "?startdate="+start+"&enddate="+end+"&country="+country+"&city
 
     }
     
-    public static void main(String[] args) throws NotFoundException {
-       EventFacade EF = getEventFacade();
-        EF.getEvents("Norway","Oslo");
-    }
+
     
     
 }
