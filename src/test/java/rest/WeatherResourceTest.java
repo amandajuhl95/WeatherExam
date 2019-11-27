@@ -49,15 +49,6 @@ public class WeatherResourceTest {
         RestAssured.defaultParser = Parser.JSON;
     }
 
-    @BeforeEach
-    public void setUp() {
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     @AfterAll
     public static void closeTestServer() {
         EMF_Creator.endREST_TestWithDB();
