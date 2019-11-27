@@ -51,7 +51,7 @@ public class EventFacadeTest {
         List<EventDTO> result = facade.getEvents("2019-12-27", "2019-12-28", "Spain", "Barcelona");
 
         assertEquals(expResult, result.get(0).getEventAddress());
-        assertEquals(3, result.size());
+        assertEquals(1, result.size());
     }
     
      /**
