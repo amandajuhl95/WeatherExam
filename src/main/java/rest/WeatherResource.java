@@ -10,16 +10,12 @@ import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.CountryFacade;
 import facades.EventFacade;
-import static facades.EventFacade.getEventFacade;
 import facades.WeatherFacade;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -55,9 +51,9 @@ public class WeatherResource {
         } catch (NotFoundException ex) {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
-        
+
     }
-    
+
 //    @GET
 //    @Path("/colorcodes")
 //    @Produces({MediaType.APPLICATION_JSON})
@@ -74,7 +70,6 @@ public class WeatherResource {
 //        }
 //        
 //    }
-
     @GET
     @Path("/country/{country}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -99,7 +94,7 @@ public class WeatherResource {
         int citycode;
 
         try {
-            
+
             if (!city.matches("[0-9]+")) {
 
                 CityDTO c = CF.getCity(city);
@@ -160,55 +155,51 @@ public class WeatherResource {
         }
 
     }
-    
-    
-    
-     @GET
+
+    @GET
     @Path("/events/{country}/{city}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<EventDTO> getEvents(@PathParam("country") String country, @PathParam("city") String city) {
-        
-        
-       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-       Calendar today = Calendar.getInstance();
-       Calendar fourDaysForward = Calendar.getInstance();
-       fourDaysForward.setTime(new Date()); // Now use today date.
-       fourDaysForward.add(Calendar.DATE, 4); // Adding 4 days
 
-        String start = sdf.format(today.getTime());
-        String end = sdf.format(fourDaysForward.getTime());
-        
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar today = Calendar.getInstance();
+        Calendar fourDaysForward = Calendar.getInstance();
+        fourDaysForward.setTime(new Date()); // Now use today date.
+        fourDaysForward.add(Calendar.DATE, 4); // Adding 4 days
+        String start = formatter.format(today.getTime());
+        String end = formatter.format(fourDaysForward.getTime());
+
         try {
-  
             return EF.getEvents(start, end, country, city);
 
         } catch (NotFoundException ex) {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
-       
+
     }
-    
-        @GET
+
+    @GET
     @Path("/events/{country}/{city}/{year}/{month}/{day}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<EventDTO> getEventsByDate(@PathParam("country") String country,@PathParam("city") String city, 
-                                          @PathParam("year") String year,@PathParam("month") String month,
-                                          @PathParam("day") String day) 
-    {
-        
-        
-        try {
-  
-              SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-       
-              String date = year+"-"+month+"-"+day;
-       
-            return EF.getEvents(date, date, country, city);
+    public List<EventDTO> getEventsByDate(@PathParam("country") String country, @PathParam("city") String city,
+            @PathParam("year") int year, @PathParam("month") int month,
+            @PathParam("day") int day) {
 
-        } catch (NotFoundException ex) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = new Date();
+            Date date = formatter.parse(year + "-" + month + "-" + day);
+
+            if (date.before(today)) {
+                throw new WebApplicationException("Dont live in the past, look ahead! Check events for tomorrow instead", 400);
+            }
+
+            return EF.getEvents(formatter.format(date), formatter.format(date), country, city);
+
+        } catch (NotFoundException | ParseException ex) {
             throw new WebApplicationException(ex.getMessage(), 400);
         }
-       
+
     }
 
 }

@@ -1,6 +1,7 @@
 package rest;
 
 import DTO.CountryDTO;
+import DTO.EventDTO;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -12,8 +13,11 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,6 +55,14 @@ public class WeatherResourceTest {
         httpServer.shutdownNow();
     }
 
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
@@ -70,7 +82,7 @@ public class WeatherResourceTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .extract().as(CountryDTO[].class);
-        
+
         assertTrue(countries.length >= 58);
 
     }
@@ -231,6 +243,51 @@ public class WeatherResourceTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
                 .body("code", equalTo(400), "message", equalTo("No weatherforecast found for the date"));
+    }
+
+    /**
+     * Test of getEvents method, of class WeatherResource.
+     */
+    @Test
+    public void testGetEvents() {
+
+        EventDTO[] events = given()
+                .contentType("application/json")
+                .get("weather/events/Germany/Berlin").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().as(EventDTO[].class);
+
+        assertTrue(events.length >= 0);
+
+    }
+
+    /**
+     * Test of getEventsByDate method, of class WeatherResource.
+     */
+    @Test
+    public void testGetEventsByDate() {
+
+        given()
+                .contentType("application/json")
+                .get("weather/events/Denmark/Copenhagen/" + 2019 + "/" + 11 + "/" + 29).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("eventName", hasSize(4), "eventDate", hasItem("2019-11-29"));
+    }
+
+    /**
+     * Test of getNegativeEventsByDate method, of class WeatherResource.
+     */
+    @Test
+    public void testNegativeGetEventsByDate() {
+
+        given()
+                .contentType("application/json")
+                .get("weather/events/Denmark/Copenhagen/" + 2018 + "/" + 10 + "/" + 12).then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST_400.getStatusCode())
+                .body("code", equalTo(400), "message", equalTo("Dont live in the past, look ahead! Check events for tomorrow instead"));
     }
 
 }
