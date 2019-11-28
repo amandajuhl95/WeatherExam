@@ -47,7 +47,7 @@ public class WeatherForecastDTO {
             return "An umbrella is not going to be enough, take a cap or drown in the rain";
         } else if ("Hail".equals(weatherStatus)) {
             return "Is it snow? ... is it rain? ... no, it's hail, so keep your head down or you might turn blind!";
-        } else if ("Thunderstorm".equals(weatherStatus) || "Rain".contains(weatherStatus) || "Showers".equals(weatherStatus)) {
+        } else if ("Thunderstorm".equals(weatherStatus) || weatherStatus.contains("Rain") || "Showers".equals(weatherStatus)) {
             return "Remember your umbrella today!";
         } else if (temp >= 25 && "Clear".equals(weatherStatus)) {
             return "There is no such thing as a healthy tan, use sunscreen today!";
