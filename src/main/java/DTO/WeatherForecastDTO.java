@@ -44,9 +44,9 @@ public class WeatherForecastDTO {
 
     private String funnyAdvice() {
         if ("Heavy Rain".equals(weatherStatus)) {
-            return "an umbrella is not going to be enough, take a cap or drown in rain";
+            return "An umbrella is not going to be enough, take a cap or drown in the rain";
         } else if ("Hail".equals(weatherStatus)) {
-            return "Is it snow ? ... is it rain ? ... no, its hail, so keep your head down or you will turn blind!";
+            return "Is it snow? ... is it rain? ... no, it's hail, so keep your head down or you might turn blind!";
         } else if ("Thunderstorm".equals(weatherStatus) || "Rain".contains(weatherStatus) || "Showers".equals(weatherStatus)) {
             return "Remember your umbrella today!";
         } else if (temp >= 25 && "Clear".equals(weatherStatus)) {
@@ -60,18 +60,16 @@ public class WeatherForecastDTO {
         } else if (temp <= 5) {
             return "It's cold outside, were a sweater... or die";
         } else if ("Heavy Cloud".equals(weatherStatus)) {
-            return "Goodbye sunshine the clouds have taken ower today";
+            return "Goodbye sunshine the clouds have taken over today";
         } else if (temp < 10) {
-            return "Why would humanity even set foot in a place this cold!! our advice: leave, dont look back! just get out of there";
+            return "Why would humanity even set foot in a place this cold!! Our advice is to leave, dont look back! Just get out of there";
         } else if (temp < 0) {
-            return "Snif snif... Whats that? hot choko on the stove?.. its freazing outside you better stay in and drink up!";
+            return "Mmmh... Whats that? hot choko on the stove?.. its freazing outside you better stay in and drink up!";
         } else if (predictability < 35) {
             return "I woudent trust so much in the weather reports today, they are probably wrong";
-        } else if ("Light Cloud".equals(weatherStatus)) {
-            return "I woudent trust so much in the weather reports today, they are probably wrong";
-        }
+        } 
 
-        return "Not a good day for an umbrella, neither for a sweather nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!";
+        return "Not a good day for an umbrella, neither for a sweater nor shorts. Our advice... Don't go outside, don't answer your phone, take a you day! You deserve it you beautiful bastard!";
     }
 
     public String getDateTime() {
