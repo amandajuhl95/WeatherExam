@@ -89,7 +89,7 @@ public class WeatherFacadeTest {
     public void testGetWeatherForecasts() throws NotFoundException {
         System.out.println("getWeatherForecasts");
 
-        String expResult = "It's cold outside, were a sweater... or die";
+        String expResult = "Why would humanity even set foot in a place this cold!! Our advice is to leave, dont look back! Just get out of there";
         List<WeatherForecastDTO> result = facade.getWeatherForecasts(2151330);
 
         assertEquals(expResult, result.get(0).getFunnyAdvice());

@@ -30,7 +30,6 @@ public class EventFacade {
 
     public EventFacade() {
     }
-    
 
     public static EventFacade getEventFacade() {
         if (instance == null) {
@@ -39,15 +38,13 @@ public class EventFacade {
         }
         return instance;
     }
-    
-    
 
     private String fetchEvents(String start, String end, String country, String city) throws MalformedURLException, IOException {
 
         URL url = new URL("https://runivn.dk/3SEMPROJECT/api/resource/events?startdate=" + start + "&enddate=" + end + "&country=" + country + "&city=" + city);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-        con.setRequestProperty("Accept", "application/json;charset=ISO-8859-1");
+        con.setRequestProperty("Accept", "application/json;charset=UTF-8");
         Scanner scan = new Scanner(con.getInputStream());
         String jsonStr = null;
         if (scan.hasNext()) {
@@ -63,14 +60,17 @@ public class EventFacade {
         try {
             List<EventDTO> eventsList = new ArrayList();
             String JsonEvents = fetchEvents(start, end, country, city);
-            EventDTO[] events = GSON.fromJson(JsonEvents, EventDTO[].class);
+            Event[] events = GSON.fromJson(JsonEvents, Event[].class);
 
             if (events == null || events.length <= 0) {
                 throw new WebApplicationException("No Events was found", 400);
             }
-            eventsList.addAll(Arrays.asList(events));
-            return eventsList;
 
+            for (Event event : events) {
+                eventsList.add(new EventDTO(event));
+            }
+
+            return eventsList;
         } catch (IOException e) {
             throw new NotFoundException("There are no events in that city for the given date");
         }

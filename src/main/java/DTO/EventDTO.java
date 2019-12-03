@@ -5,18 +5,23 @@
  */
 package DTO;
 
+import facades.Event;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class EventDTO {
     
    private String eventAddress;
    private String eventDate;
    private String eventName;
    private String eventURL;
+   DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 
-    public EventDTO(String eventAddress, String eventDate, String eventName, String eventURL) {
-        this.eventAddress = eventAddress;
-        this.eventDate = eventDate;
-        this.eventName = eventName;
-        this.eventURL = eventURL;
+    public EventDTO(Event event) {
+        this.eventAddress = event.getEventAddress();
+        this.eventDate = formatter.format(event.getEventDate());
+        this.eventName = event.getEventName();
+        this.eventURL = event.getEventURL();
     }
 
     public String getEventAddress() {
