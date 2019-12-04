@@ -13,10 +13,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 
 /**
@@ -70,7 +74,11 @@ public class EventFacade {
                 eventsList.add(new EventDTO(event));
             }
 
+            Collections.sort(eventsList, (EventDTO o1, EventDTO o2) -> {return o2.compareTo(o1);});
+            Collections.reverse(eventsList);
+                    
             return eventsList;
+            
         } catch (IOException e) {
             throw new NotFoundException("There are no events in that city for the given date");
         }
